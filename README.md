@@ -41,12 +41,36 @@
 
 ชุดข้อมูล pilot ระบุมาตรา 218/18 แห่ง พ.ร.บ. หลักทรัพย์และตลาดหลักทรัพย์ เป็นหลักฐานสำหรับข้อนี้ ระบบจับคู่กับรหัส `S00755` แล้วแปลงคำถามและตัวบทเป็นเวกเตอร์เพื่อจัดอันดับ [แถวข้อมูลและผลจับคู่](docs/examples/run/dataset.json)
 
-| วิธีค้น | ตัวอย่างเวกเตอร์คำถาม | Cosine กับ `S00755` | อันดับของ `S00755` | เข้า prompt |
-| --- | --- | ---: | ---: | --- |
-| R1 · Binary BoW | คำว่า “กองทุน” มีค่าดิบ 1 และหลัง normalize เป็น 0.4472 | 0.1957 | 6 | — |
-| R2 · TF-IDF | คำว่า “กองทุน” มีน้ำหนักดิบ 4.5318 และหลัง normalize เป็น 0.4501 | 0.4601 | 3 | ✓ |
-| R3 · Word2Vec Skip-gram | พิกัด 1 ของค่าเฉลี่ยเวกเตอร์คำ หลัง normalize เป็น −0.2227 | 0.8271 | 2 | ✓ |
-| R4 · BGE-M3 | พิกัด 386 ของเวกเตอร์ข้อความมีค่า 0.2314 | 0.6671 | 1 | ✓ |
+โค้ดนี้เปิดผลที่บันทึกไว้แล้วแสดงสี่แถวของคำถาม `pilot-04144` รันได้จากโฟลเดอร์ repository ใน Jupyter
+
+```python
+from pathlib import Path
+import json
+import pandas as pd
+from IPython.display import display
+
+path = Path("docs/examples/run/rankings.json")
+rows = json.loads(path.read_text(encoding="utf-8"))
+rankings = pd.json_normalize([row for row in rows if row["question_id"] == "pilot-04144"])
+columns = ["method", "gold_ranks.S00755", "metrics.recall_at_5", "metrics.ndcg_at_5"]
+preview = rankings[columns]
+print(f"จำนวนแถว {len(preview)} | จำนวนคอลัมน์ {len(preview.columns)}")
+with pd.option_context("display.float_format", "{:.3f}".format):
+    display(preview.head())
+```
+
+**ผลลัพธ์**
+
+```text
+จำนวนแถว 4 | จำนวนคอลัมน์ 4
+```
+
+| # | method | gold_ranks.S00755 | metrics.recall_at_5 | metrics.ndcg_at_5 |
+| ---: | --- | ---: | ---: | ---: |
+| 0 | R1 Binary BoW | 6 | 0.000 | 0.000 |
+| 1 | R2 TF-IDF | 3 | 1.000 | 0.500 |
+| 2 | R3 Word2Vec | 2 | 1.000 | 0.631 |
+| 3 | R4 BGE-M3 | 1 | 1.000 | 1.000 |
 
 แต่ละวิธีเรียง cosine จากมากไปน้อยภายในเวกเตอร์ของวิธีนั้น แล้วพิจารณาห้าอันดับแรกเพื่อเตรียม prompt ในข้อนี้ R1 พบมาตราเป้าหมายที่อันดับ 6 จึงส่งมาตราอื่นให้ Typhoon ส่วน R2 ส่งมาตราเป้าหมายเข้า prompt แล้ว แต่ข้อความที่ Typhoon สร้างยังกล่าวถึงมาตรา 20 ของกฎหมายอีกฉบับ [คะแนนและอันดับทั้งสิบรายการ](docs/examples/run/rankings.json)
 
@@ -57,7 +81,7 @@
 | R1 · Binary BoW, R2 · TF-IDF, R3 · Word2Vec | ทวนคำถามและคัดตัวบท โดยมีรหัส `[S02926]` แต่ข้อความหยุดก่อนระบุจำนวนวัน |
 | R4 · BGE-M3 | ระบุ “ภายในสิบสี่วันนับแต่วันลงมติหรือออกคำบังคับ” พร้อมกล่าวถึงหลายมาตราในข้อความ |
 
-รอบสาธิตใช้คำถาม 2 ข้อและจัดอันดับบนตัวบท 72 รายการชุดเดียวกันจากคลัง 5,127 มาตรา Typhoon ใช้ CPU แบบ `bfloat16` และผลทั้ง 8 ชุดถึงเพดาน 128 tokens [รายงานเต็ม](docs/examples/run/cases.md) · [วิธีรันซ้ำ](docs/examples/README.md) · [รุ่นข้อมูลและโมเดล](docs/examples/run/manifest.json)
+รอบสาธิตใช้คำถาม 2 ข้อและจัดอันดับบนตัวบท 72 รายการชุดเดียวกันจากคลัง 5,127 มาตรา Typhoon ใช้ CPU แบบ `bfloat16` และผลทั้ง 8 ชุดถึงเพดาน 128 tokens [โค้ดและตารางผลทุกขั้น](docs/examples/output_preview.md) · [Notebook พร้อมผลที่รันแล้ว](docs/examples/output_preview.ipynb) · [รายงานเต็ม](docs/examples/run/cases.md)
 
 ## สิ่งที่ทำได้
 
