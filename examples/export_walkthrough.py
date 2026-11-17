@@ -19,7 +19,7 @@ from thai_legal_rag.inference_index import InferenceIndex
 from thai_legal_rag.pipeline import _versions
 from thai_legal_rag.retrieval import METHODS, rank_exact, score_ranking
 
-from dataset_trace import load_example_data
+from dataset_trace import compact_audits, load_example_data
 from embedding_trace import describe_embeddings, query_vector
 from generation_trace import run_answer_examples
 from render_cases import render_cases
@@ -125,14 +125,17 @@ def sample_index(index, questions, size: int, bge_revision: str, config: RunConf
 
 
 def export(args, destination: Path) -> None:
+    source_commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
     index = InferenceIndex.load(args.index_dir, args.device)
     revisions = {"corpus": index.corpus_revision, "pilot": args.pilot_revision, "test": args.test_revision}
     corpus, questions, datasets = load_example_data(revisions, args.question_id, destination / "audit")
+    excluded_id = (datasets["excluded_example"] or {}).get("question_id")
+    datasets["audit_files"] = compact_audits(destination / "audit", args.question_id, excluded_id)
     if list(corpus) != index.ids or any(
         any(corpus[sid][key] != value for key, value in index.corpus[sid].items()) for sid in index.ids
     ):
         raise ValueError("index content or order does not match the pinned statute corpus")
-    config = RunConfig()
+    config = RunConfig(max_new_tokens=args.max_new_tokens)
     if args.sample_statutes is not None:
         sample_index(index, questions, args.sample_statutes, args.bge_revision, config)
     rankings, embeddings = [], []
@@ -164,7 +167,7 @@ def export(args, destination: Path) -> None:
     answers = []
     if args.generator_revision is not None:
         answers = run_answer_examples(corpus, questions, rankings, config, args.generator_revision,
-                                      index.device, destination / "generation")
+                                      index.device, destination / "generation", bfloat16=args.generator_bfloat16)
         write_json(destination / "answers.json", answers)
         prompt_ids = sorted({sid for answer in answers for sid in answer["prompt_ids"]})
         datasets["prompt_statutes"] = {sid: {
@@ -173,7 +176,7 @@ def export(args, destination: Path) -> None:
 
     manifest = {
         "format_version": 1,
-        "source_commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
+        "source_commit": source_commit,
         "scope": "subset" if args.sample_statutes else "full_corpus",
         "corpus_size": len(corpus),
         "candidate_count": len(index.ids),
@@ -192,6 +195,10 @@ def export(args, destination: Path) -> None:
         "bge_dtype": index.manifest.get("bge_dtype"),
         "generator": config.generator_id if answers else None,
         "generator_revision": args.generator_revision,
+        "generator_dtype": (
+            ("bfloat16" if args.generator_bfloat16 else "float32" if index.device == "cpu" else "float16")
+            if answers else None
+        ),
         "generation_status": "completed" if answers else "skipped",
         "seed": config.seed,
         "rank_k": config.rank_k,
@@ -218,6 +225,8 @@ def main() -> None:
     parser.add_argument("--sample-statutes", type=int, help="Score a teaching subset using an R1–R3 index")
     parser.add_argument("--bge-revision", type=revision, help="Pinned BGE revision for sample mode")
     parser.add_argument("--generator-revision", type=revision, help="Enable Typhoon at this pinned revision")
+    parser.add_argument("--generator-bfloat16", action="store_true", help="Use bfloat16 for Typhoon weights")
+    parser.add_argument("--max-new-tokens", type=int, default=RunConfig.max_new_tokens)
     parser.add_argument("--device", choices=("auto", "cpu", "cuda"), default="cpu")
     args = parser.parse_args()
     output = args.output_dir.resolve()
@@ -227,6 +236,10 @@ def main() -> None:
         parser.error("question IDs must be unique")
     if (args.sample_statutes is None) != (args.bge_revision is None):
         parser.error("--sample-statutes and --bge-revision must be used together")
+    if args.max_new_tokens < 1:
+        parser.error("--max-new-tokens must be positive")
+    if args.generator_bfloat16 and args.generator_revision is None:
+        parser.error("--generator-bfloat16 requires --generator-revision")
     output.parent.mkdir(parents=True, exist_ok=True)
     temporary = Path(tempfile.mkdtemp(prefix=f".{output.name}.", dir=output.parent))
     try:

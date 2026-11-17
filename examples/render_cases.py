@@ -253,7 +253,6 @@ def render_cases(
         raise ValueError(f"questions are missing columns {sorted(missing)}")
 
     question_rows = list(questions.to_dict(orient="records"))
-    question_order = [str(row["question_id"]) for row in question_rows]
     ranking_by_question: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for row in rankings:
         ranking_by_question[str(row["question_id"])].append(row)
@@ -276,6 +275,7 @@ def render_cases(
         "## ขอบเขตของรอบนี้", "",
         f"- คลังตัวบทมี {int(manifest.get('corpus_size', len(corpus))):,} รายการ · scope: {_cell(manifest.get('scope', '—'))}",
         *([f"- จำนวน candidate ที่ใช้จัดอันดับ: {int(manifest.get('candidate_count', manifest.get('corpus_size', len(corpus)))):,} รายการ"] if manifest.get("scope") == "subset" else []),
+        *([f"- วิธีเลือก candidate: {_cell(manifest.get('candidate_selection', 'ไม่มีรายละเอียด'))}"] if manifest.get("scope") == "subset" else []),
         f"- source commit: {_cell(manifest.get('source_commit', '—'))}",
         f"- วิธีค้นที่ประกาศใน manifest: {', '.join(_cell(method) for method in methods) or 'ไม่มี'}",
         f"- สถานะการสร้างคำตอบ: {_cell(manifest.get('generation_status', 'skipped'))}",

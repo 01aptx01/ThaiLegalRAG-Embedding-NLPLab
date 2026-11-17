@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import tempfile
+import json
 from pathlib import Path
 from typing import Any
 
@@ -65,6 +66,35 @@ def _statute_example(statute_id: str, row: dict[str, Any], match_method: str) ->
         "raw_section_content_excerpt": _excerpt(content),
         "normalized_search_text_excerpt": _excerpt(search_text(content)),
     }
+
+
+def compact_audits(audit_dir: Path, question_ids: list[str], excluded_id: str | None) -> list[str]:
+    """Keep the unchanged audit values for the selected cases and one exclusion."""
+    kept_questions = [*question_ids, *([excluded_id] if excluded_id else [])]
+    names = ("question_audit.csv", "mapping_audit.csv", "statute_ids.csv")
+    questions, mappings, statutes = (
+        pd.read_csv(audit_dir / name, dtype=str, keep_default_na=False) for name in names
+    )
+    gold_ids = sorted(set(mappings.loc[mappings["question_id"].isin(question_ids), "statute_id"]) - {""})
+    for name, rows in zip(names, (
+        questions[questions["question_id"].isin(kept_questions)],
+        mappings[mappings["question_id"].isin(kept_questions)],
+        statutes[statutes["statute_id"].isin(gold_ids)],
+    ), strict=True):
+        rows.to_csv(audit_dir / name, index=False, encoding="utf-8-sig")
+    files = [*names, "audit_scope.json"]
+    duplicate_keys = audit_dir / "duplicate_keys.jsonl"
+    duplicates = [line for line in duplicate_keys.read_text(encoding="utf-8").splitlines()
+                  if line.strip() and set(json.loads(line)["ids"]).intersection(gold_ids)]
+    if duplicates:
+        duplicate_keys.write_text("\n".join(duplicates) + "\n", encoding="utf-8")
+        files.append(duplicate_keys.name)
+    else:
+        duplicate_keys.unlink()
+    scope = {"scope": "filtered_view_of_production_audit", "question_ids": kept_questions,
+             "selected_question_ids": question_ids, "excluded_question_id": excluded_id, "gold_ids": gold_ids}
+    (audit_dir / "audit_scope.json").write_text(json.dumps(scope, indent=2) + "\n", encoding="utf-8")
+    return [f"audit/{name}" for name in files]
 
 
 def load_example_data(

@@ -22,6 +22,8 @@ def run_answer_examples(
     revision: str,
     device: str,
     output_dir: Path,
+    *,
+    bfloat16: bool = False,
 ) -> list[dict[str, Any]]:
     """Call the production generator and return unchanged JSONL result rows."""
     import torch
@@ -81,6 +83,10 @@ def run_answer_examples(
     indexed_questions = question_table[["reference_answer"]].copy()
     indexed_questions.index.name = "question_id"
     dtype = torch.float16 if device == "cuda" else torch.float32
+    if bfloat16:
+        if device == "cuda" and not torch.cuda.is_bf16_supported():
+            raise ValueError("this CUDA device does not support bfloat16")
+        dtype = torch.bfloat16
     run_generation(
         corpus, indexed_questions, pd.DataFrame(generation_rows), config,
         revision, device, dtype, output_dir,
