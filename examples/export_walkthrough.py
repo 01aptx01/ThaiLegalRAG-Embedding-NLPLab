@@ -20,7 +20,7 @@ from thai_legal_rag.pipeline import _versions
 from thai_legal_rag.retrieval import METHODS, rank_exact, score_ranking
 
 from dataset_trace import compact_audits, load_example_data
-from embedding_trace import describe_embeddings, query_vector
+from embedding_trace import describe_embeddings
 from generation_trace import run_answer_examples
 from render_cases import render_cases
 
@@ -141,7 +141,7 @@ def export(args, destination: Path) -> None:
     rankings, embeddings = [], []
     positions = {sid: i for i, sid in enumerate(index.ids)}
     for question in questions.itertuples(index=False):
-        vectors = {key: query_vector(index, question.question, key) for key in index.methods}
+        vectors = {key: index._encode_query(question.question, key) for key in index.methods}
         rows = [trace_ranking(index, question, key, vectors[key], config, positions) for key in index.methods]
         rankings.extend(rows)
         # Use the same examples across methods: up to two gold statutes and a distractor.
@@ -168,7 +168,6 @@ def export(args, destination: Path) -> None:
     if args.generator_revision is not None:
         answers = run_answer_examples(corpus, questions, rankings, config, args.generator_revision,
                                       index.device, destination / "generation", bfloat16=args.generator_bfloat16)
-        write_json(destination / "answers.json", answers)
         prompt_ids = sorted({sid for answer in answers for sid in answer["prompt_ids"]})
         datasets["prompt_statutes"] = {sid: {
             field: corpus[sid][field] for field in ("law_name", "section_num", "section_content")

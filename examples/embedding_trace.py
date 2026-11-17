@@ -4,25 +4,11 @@ from __future__ import annotations
 from collections import Counter
 
 import numpy as np
-from sklearn.preprocessing import normalize
 
 from thai_legal_rag.data import search_text
-from thai_legal_rag.retrieval import _tokenize, _word2vec_average
+from thai_legal_rag.retrieval import _tokenize
 
 _LIMIT = 10
-
-
-def query_vector(index, question: str, method: str):
-    """Create the same normalized query vector used by ``InferenceIndex.search``."""
-    if method not in index.methods:
-        raise ValueError(f"unknown or unavailable method {method!r}; choose from {list(index.methods)}")
-    text = search_text(question)
-    if method in {"r1", "r2"}:
-        return normalize(index.vectorizers[method].transform([_tokenize(text)]))
-    if method == "r3":
-        return _word2vec_average([_tokenize(text)], index.w2v)
-    vectors = index.encoder.encode([text], show_progress_bar=False).astype(np.float32)
-    return normalize(vectors)
 
 
 def _values(matrix, row: int) -> np.ndarray:

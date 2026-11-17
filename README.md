@@ -10,7 +10,7 @@
     <a href="#ตัวอย่างผลรันจริง">ตัวอย่างผลรันจริง</a> ·
     <a href="docs/getting-started.md#เปิดหน้าเว็บบนเครื่อง">เปิดเดโมบนเครื่อง</a> ·
     <a href="notebooks/Thai_Legal_RAG_Clean.ipynb">Notebook</a> ·
-    <a href="https://github.com/01aptx01/ThaiLegal-Embedding-NLPLab/issues/new">แจ้งปัญหาหรือเสนอฟีเจอร์</a>
+    <a href="https://github.com/01aptx01/ThaiLegalRAG-Embedding-NLPLab/issues/new">แจ้งปัญหาหรือเสนอฟีเจอร์</a>
   </p>
 </div>
 
@@ -80,7 +80,7 @@ Cosine คือ $\frac{q\cdot d}{\lVert q\rVert_2\lVert d\rVert_2}$ เมื�
 | R3 · Word2Vec | `S04684` · 0.8416 | `S00755` · 0.8271 | **2** |
 | R4 · BGE-M3 | `S00755` · 0.6671 | `S00754` · 0.6533 | **1** |
 
-รอบสาธิตใช้คำถาม 2 ข้อและจัดอันดับบนตัวบท 72 รายการชุดเดียวกันจากคลัง 5,127 มาตรา ระบบพิจารณาห้าอันดับแรกสำหรับส่งให้ Typhoon ดังนั้น `S00755` จาก R1 จึงอยู่นอกช่วงนี้ [ผลรันและคำตอบ Typhoon](docs/examples/run/cases.md) · [ตารางข้อมูลและเวกเตอร์ฉบับละเอียด](docs/examples/output_preview.md) · [ขอบเขตและรุ่นข้อมูล](docs/examples/run/manifest.json)
+รอบสาธิตใช้คำถาม 2 ข้อและจัดอันดับบนตัวบท 72 รายการชุดเดียวกันจากคลัง 5,127 มาตรา ระบบพิจารณาห้าอันดับแรกสำหรับส่งให้ Typhoon ดังนั้น `S00755` จาก R1 จึงอยู่นอกช่วงนี้ [ผลรันและคำตอบ Typhoon](docs/examples/run/cases.md) · [Notebook พร้อมตารางผล](docs/examples/output_preview.ipynb) · [ขอบเขตและรุ่นข้อมูล](docs/examples/run/manifest.json)
 
 ## สิ่งที่ทำได้
 
@@ -178,5 +178,3 @@ npm --prefix frontend run build
 ## สัญญาอนุญาตและแหล่งข้อมูล
 
 โค้ดใช้ [MIT License](LICENSE) ส่วนชุดข้อมูลและโมเดลอยู่ภายใต้เงื่อนไขของผู้เผยแพร่แต่ละราย ดู [ชุดข้อมูลที่ใช้](docs/data.md#ชุดข้อมูลที่ใช้) และ [โมเดลที่ใช้](docs/retrieval.md#วิธีค้นทั้งสี่แบบ)
-
-![เนื้อหา MIT License จากไฟล์ LICENSE จริงของโปรเจกต์](docs/screenshots/license.png)

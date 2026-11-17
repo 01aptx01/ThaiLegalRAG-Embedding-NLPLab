@@ -194,17 +194,14 @@ def _dataset_embedding_example(
     return lines
 
 
-def _method_answer_section(
-    corpus: Mapping[str, Mapping[str, Any]], answer: Mapping[str, Any],
-    prompt_statutes: Mapping[str, Mapping[str, Any]] | None = None,
-) -> list[str]:
+def _method_answer_section(answer: Mapping[str, Any]) -> list[str]:
     method = _text(answer.get("method"))
     prompt_ids = _ids(answer.get("prompt_ids"))
     top_k_ids = _ids(answer.get("top_k_ids"))
     omitted_ids = _ids(answer.get("omitted_ids"))
     cited_ids = _ids(answer.get("cited_ids"))
     invalid_ids = set(_ids(answer.get("invalid_ids")))
-    lines = [f"#### {_cell(method)}", "",
+    return [f"#### {_cell(method)}", "",
              f"- Retrieved top-k: {', '.join(_cell(sid) for sid in top_k_ids) or 'ไม่มี'}",
              f"- ตัวบทที่เข้า prompt: {', '.join(_cell(sid) for sid in prompt_ids) or 'ไม่มี'}",
              f"- ตัวบทที่ไม่ได้ใส่เพราะงบ token: {', '.join(_cell(sid) for sid in omitted_ids) or 'ไม่มี'}",
@@ -216,25 +213,7 @@ def _method_answer_section(
              f"{answer.get('input_tokens', '—')} / {answer.get('output_tokens', '—')} · "
              f"เวลา generate: {_metric(answer.get('generation_seconds'), 2)} วินาที",
              f"- ชน output token limit: {bool(answer.get('output_token_limit_reached'))}",
-             "", "**คำตอบที่โมเดลสร้าง**", "", _quoted(answer.get("answer")), "",
-             "**ตัวบทที่ส่งให้โมเดล**", ""]
-    if not prompt_ids:
-        lines.append("ไม่มีตัวบทถูกส่งเข้า prompt")
-    for sid in prompt_ids:
-        statute = (prompt_statutes or {}).get(sid) or corpus.get(sid)
-        if statute is None:
-            lines.extend([f"- **{_cell(sid)}** · ไม่พบรหัสนี้ในคลังที่ export", ""])
-            continue
-        label = _statute_label(corpus, sid)
-        if sid not in corpus:
-            label = f"{sid} · {_text(statute.get('law_name'))} มาตรา {_text(statute.get('section_num'))}".strip()
-        text = _text(statute.get("section_content"))
-        excerpt = text[:1000]
-        if len(text) > len(excerpt):
-            excerpt += "…"
-        lines.extend([f"- **{_cell(label)}** · อ่านฉบับเต็มได้ใน [dataset.json](dataset.json) ด้วย ID {_cell(sid)}",
-                      "", _quoted(excerpt), ""])
-    return lines
+             "", "**คำตอบที่โมเดลสร้าง**", "", _quoted(answer.get("answer")), ""]
 
 
 def render_cases(
@@ -287,7 +266,7 @@ def render_cases(
         f"- สถานะการสร้างคำตอบ: {_cell(manifest.get('generation_status', 'skipped'))}",
         *([f"- Generator: {_cell(manifest.get('generator'))} · revision {_cell(manifest.get('generator_revision'))} · dtype {_cell(manifest.get('generator_dtype'))} · input budget {manifest.get('max_input_tokens', '—')} tokens · output budget {manifest.get('max_new_tokens', '—')} tokens"] if manifest.get("generation_status") == "completed" else []),
         "- ไฟล์ข้อมูลดิบ: [dataset.json](dataset.json) · [embeddings.json](embeddings.json) · [rankings.json](rankings.json) · [manifest.json](manifest.json)",
-        *(["- ผลคำตอบ: [answers.json](answers.json) · [review_template.csv](generation/review_template.csv)"] if manifest.get("generation_status") == "completed" else []), "",
+        *(["- คำตอบและรหัสตัวบทที่ส่งให้โมเดลอยู่ใน [generation_rows.jsonl](generation/generation_rows.jsonl) ตัวบทฉบับเต็มเปิดตามรหัสใน `prompt_statutes` ของ [dataset.json](dataset.json) · [แบบฟอร์มตรวจคำตอบ](generation/review_template.csv)"] if manifest.get("generation_status") == "completed" else []), "",
         "Gold คือมาตราที่ชุดข้อมูลกำกับไว้ ในรอบที่ใช้คลังย่อย ระบบคัดมาตรา gold และผลค้นอันดับต้นจาก R1–R3 ไว้ก่อน แล้วคำนวณคะแนนทั้งหมดภายในชุดที่เลือก", "",
     ]
 
@@ -336,14 +315,10 @@ def render_cases(
                 if answer is None:
                     lines.extend([f"#### {_cell(method)}", "", "ไม่มีผลคำตอบสำหรับวิธีนี้ในไฟล์ผล", ""])
                 else:
-                    lines.extend(_method_answer_section(
-                        corpus, answer, (dataset or {}).get("prompt_statutes")
-                    ))
+                    lines.extend(_method_answer_section(answer))
             for answer in query_answers:
                 if str(answer.get("method")) not in methods:
-                    lines.extend(_method_answer_section(
-                        corpus, answer, (dataset or {}).get("prompt_statutes")
-                    ))
+                    lines.extend(_method_answer_section(answer))
         lines.extend(["---", ""])
 
     if not question_rows:

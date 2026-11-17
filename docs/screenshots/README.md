@@ -1,6 +1,6 @@
 # ที่มาของภาพใน README
 
-ภาพหน้าเว็บจับด้วย Chromium/Playwright จาก frontend และ FastAPI ของ repo ที่รันจริง ไม่มีการแทน API response หรือใส่คำตอบจำลองในหน้าเว็บ ส่วนภาพผลคำสั่งและสัญญาอนุญาตเป็นภาพของข้อความจริงที่จัดรูปให้อ่านง่าย ไม่ใช่ภาพจากโปรแกรม Terminal
+ภาพหน้าเว็บจับด้วย Chromium/Playwright จาก frontend และ FastAPI ของ repo ที่รันจริง ไม่มีการแทน API response หรือใส่คำตอบจำลองในหน้าเว็บ ส่วนภาพผลคำสั่งเป็นภาพของข้อความจริงที่จัดรูปให้อ่านง่าย ไม่ใช่ภาพจากโปรแกรม Terminal
 
 ## สภาพแวดล้อมที่ใช้
 
@@ -23,7 +23,6 @@
 | `getting-started.png` | stdout ของ frontend build และบรรทัดสำคัญจากการสร้างดัชนีจริง |
 | `configuration.png` | stdout ของ `thai-legal-rag-web serve --help` |
 | `contributing.png` | บางรายชื่อจาก unittest พร้อมสรุปจริง 32 tests ผ่าน และ stdout ของ frontend build |
-| `license.png` | ข้อความจากไฟล์ `LICENSE` ของ repo |
 
 ## ผลที่ใช้ใน Evaluate
 
