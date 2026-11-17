@@ -1,0 +1,5 @@
+method,gold_in_prompt,retrieval_miss
+R1 Binary BoW,1,1
+R2 TF-IDF,2,0
+R3 Word2Vec,2,0
+R4 BGE-M3,2,0

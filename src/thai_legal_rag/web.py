@@ -17,6 +17,8 @@ from fastapi.responses import FileResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field, field_validator
 
+from .config import RunConfig
+
 logger = logging.getLogger(__name__)
 
 
@@ -46,7 +48,7 @@ def _event_stream(index, generator, query, cancelled):
             return
         try:
             started = perf_counter()
-            ranked = index.search(query.question, method, limit=10)
+            ranked = index.search(query.question, method, limit=RunConfig.rank_k)
             retrieval_ms = (perf_counter() - started) * 1000
             evidence = []
             for statute_id in ranked:
@@ -66,7 +68,7 @@ def _event_stream(index, generator, query, cancelled):
                     "input_tokens": None, "output_tokens": None, "generation_ms": None, "ttft_ms": None,
                 }
                 continue
-            with closing(generator.events(query.question, ranked[:5], index.corpus, cancelled)) as events:
+            with closing(generator.events(query.question, ranked[:RunConfig.top_k], index.corpus, cancelled)) as events:
                 for event in events:
                     yield {**event, "method": method}
         except Exception:
@@ -97,7 +99,7 @@ def create_app(
     device: str = "auto",
     generator_revision: str | None = None,
     retrieval_only: bool = False,
-    max_new_tokens: int = 256,
+    max_new_tokens: int = RunConfig.max_new_tokens,
 ) -> FastAPI:
     @asynccontextmanager
     async def lifespan(app: FastAPI):
@@ -227,7 +229,7 @@ def main(argv: list[str] | None = None) -> int:
     serve.add_argument("--frontend", type=Path, default=Path("frontend/dist"))
     serve.add_argument("--evaluation-run", type=Path)
     serve.add_argument("--generator-revision")
-    serve.add_argument("--max-new-tokens", type=int, default=256)
+    serve.add_argument("--max-new-tokens", type=int, default=RunConfig.max_new_tokens)
     serve.add_argument("--retrieval-only", action="store_true")
     serve.add_argument("--host", default="127.0.0.1")
     serve.add_argument("--port", type=int, default=8000)

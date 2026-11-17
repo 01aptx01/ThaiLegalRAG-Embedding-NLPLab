@@ -1,0 +1,1935 @@
+[
+  {
+    "question_id": "pilot-04144",
+    "method": "R1 Binary BoW",
+    "method_key": "r1",
+    "statutes": [
+      {
+        "statute_id": "S00755",
+        "law_name": "พระราชบัญญัติหลักทรัพย์และตลาดหลักทรัพย์ พ.ศ. 2535",
+        "section_num": "218/18"
+      },
+      {
+        "statute_id": "S04712",
+        "law_name": "พระราชบัญญัติกองทุนสำรองเลี้ยงชีพ พ.ศ. 2530",
+        "section_num": "35"
+      }
+    ],
+    "embedding": {
+      "method": "R1 Binary BoW",
+      "dimension": 7046,
+      "tokenizer": "PyThaiNLP newmm",
+      "tokens": [
+        "ผู้จัดการ",
+        "กองทุน",
+        "ต้อง",
+        "ปฏิบัติ",
+        "อย่างไร",
+        "?"
+      ],
+      "raw_query_norm": 2.2360680103302,
+      "normalized_query_norm": 0.9999999403953552,
+      "coordinates": [
+        {
+          "index": 2046,
+          "term": "กองทุน",
+          "query_token_count": 1,
+          "raw_value": 1.0,
+          "normalized_value": 0.4472135901451111
+        },
+        {
+          "index": 3379,
+          "term": "ต้อง",
+          "query_token_count": 1,
+          "raw_value": 1.0,
+          "normalized_value": 0.4472135901451111
+        },
+        {
+          "index": 3961,
+          "term": "ปฏิบัติ",
+          "query_token_count": 1,
+          "raw_value": 1.0,
+          "normalized_value": 0.4472135901451111
+        },
+        {
+          "index": 4217,
+          "term": "ผู้จัดการ",
+          "query_token_count": 1,
+          "raw_value": 1.0,
+          "normalized_value": 0.4472135901451111
+        },
+        {
+          "index": 5801,
+          "term": "อย่างไร",
+          "query_token_count": 1,
+          "raw_value": 1.0,
+          "normalized_value": 0.4472135901451111
+        },
+        {
+          "index": 74,
+          "term": "/18",
+          "query_token_count": 0,
+          "raw_value": 0.0,
+          "normalized_value": 0.0
+        },
+        {
+          "index": 987,
+          "term": "218",
+          "query_token_count": 0,
+          "raw_value": 0.0,
+          "normalized_value": 0.0
+        },
+        {
+          "index": 1058,
+          "term": "2535",
+          "query_token_count": 0,
+          "raw_value": 0.0,
+          "normalized_value": 0.0
+        },
+        {
+          "index": 2068,
+          "term": "การ",
+          "query_token_count": 0,
+          "raw_value": 0.0,
+          "normalized_value": 0.0
+        },
+        {
+          "index": 2156,
+          "term": "การบริหาร",
+          "query_token_count": 0,
+          "raw_value": 0.0,
+          "normalized_value": 0.0
+        }
+      ],
+      "statute_vectors": [
+        {
+          "statute_id": "S00755",
+          "law_name": "พระราชบัญญัติหลักทรัพย์และตลาดหลักทรัพย์ พ.ศ. 2535",
+          "section_num": "218/18",
+          "normalized_l2_norm": 1.0,
+          "coordinates": [
+            {
+              "index": 2046,
+              "value": 0.14586499333381653,
+              "term": "กองทุน",
+              "raw_value": 1.0
+            },
+            {
+              "index": 3379,
+              "value": 0.14586499333381653,
+              "term": "ต้อง",
+              "raw_value": 1.0
+            },
+            {
+              "index": 3961,
+              "value": 0.0,
+              "term": "ปฏิบัติ",
+              "raw_value": 0.0
+            },
+            {
+              "index": 4217,
+              "value": 0.14586499333381653,
+              "term": "ผู้จัดการ",
+              "raw_value": 1.0
+            },
+            {
+              "index": 5801,
+              "value": 0.0,
+              "term": "อย่างไร",
+              "raw_value": 0.0
+            },
+            {
+              "index": 74,
+              "value": 0.14586499333381653,
+              "term": "/18",
+              "raw_value": 1.0
+            },
+            {
+              "index": 987,
+              "value": 0.14586499333381653,
+              "term": "218",
+              "raw_value": 1.0
+            },
+            {
+              "index": 1058,
+              "value": 0.14586499333381653,
+              "term": "2535",
+              "raw_value": 1.0
+            },
+            {
+              "index": 2068,
+              "value": 0.14586499333381653,
+              "term": "การ",
+              "raw_value": 1.0
+            },
+            {
+              "index": 2156,
+              "value": 0.14586499333381653,
+              "term": "การบริหาร",
+              "raw_value": 1.0
+            }
+          ],
+          "raw_norm": 6.855654716491699
+        },
+        {
+          "statute_id": "S04712",
+          "law_name": "พระราชบัญญัติกองทุนสำรองเลี้ยงชีพ พ.ศ. 2530",
+          "section_num": "35",
+          "normalized_l2_norm": 0.9999999403953552,
+          "coordinates": [
+            {
+              "index": 2046,
+              "value": 0.16222141683101654,
+              "term": "กองทุน",
+              "raw_value": 1.0
+            },
+            {
+              "index": 3379,
+              "value": 0.16222141683101654,
+              "term": "ต้อง",
+              "raw_value": 1.0
+            },
+            {
+              "index": 3961,
+              "value": 0.16222141683101654,
+              "term": "ปฏิบัติ",
+              "raw_value": 1.0
+            },
+            {
+              "index": 4217,
+              "value": 0.16222141683101654,
+              "term": "ผู้จัดการ",
+              "raw_value": 1.0
+            },
+            {
+              "index": 5801,
+              "value": 0.0,
+              "term": "อย่างไร",
+              "raw_value": 0.0
+            },
+            {
+              "index": 74,
+              "value": 0.0,
+              "term": "/18",
+              "raw_value": 0.0
+            },
+            {
+              "index": 987,
+              "value": 0.0,
+              "term": "218",
+              "raw_value": 0.0
+            },
+            {
+              "index": 1058,
+              "value": 0.0,
+              "term": "2535",
+              "raw_value": 0.0
+            },
+            {
+              "index": 2068,
+              "value": 0.0,
+              "term": "การ",
+              "raw_value": 0.0
+            },
+            {
+              "index": 2156,
+              "value": 0.0,
+              "term": "การบริหาร",
+              "raw_value": 0.0
+            }
+          ],
+          "raw_norm": 6.164413928985596
+        }
+      ],
+      "representation": "binary term presence, followed by L2 normalization"
+    }
+  },
+  {
+    "question_id": "pilot-04144",
+    "method": "R2 TF-IDF",
+    "method_key": "r2",
+    "statutes": [
+      {
+        "statute_id": "S00755",
+        "law_name": "พระราชบัญญัติหลักทรัพย์และตลาดหลักทรัพย์ พ.ศ. 2535",
+        "section_num": "218/18"
+      },
+      {
+        "statute_id": "S04712",
+        "law_name": "พระราชบัญญัติกองทุนสำรองเลี้ยงชีพ พ.ศ. 2530",
+        "section_num": "35"
+      }
+    ],
+    "embedding": {
+      "method": "R2 TF-IDF",
+      "dimension": 7046,
+      "tokenizer": "PyThaiNLP newmm",
+      "tokens": [
+        "ผู้จัดการ",
+        "กองทุน",
+        "ต้อง",
+        "ปฏิบัติ",
+        "อย่างไร",
+        "?"
+      ],
+      "raw_query_norm": 10.068521499633789,
+      "normalized_query_norm": 1.0,
+      "coordinates": [
+        {
+          "index": 2046,
+          "term": "กองทุน",
+          "query_token_count": 1,
+          "raw_value": 4.531835556030273,
+          "normalized_value": 0.4500994086265564,
+          "idf": 4.531835556030273
+        },
+        {
+          "index": 3379,
+          "term": "ต้อง",
+          "query_token_count": 1,
+          "raw_value": 1.8720424175262451,
+          "normalized_value": 0.18593022227287292,
+          "idf": 1.8720424175262451
+        },
+        {
+          "index": 3961,
+          "term": "ปฏิบัติ",
+          "query_token_count": 1,
+          "raw_value": 3.7710299491882324,
+          "normalized_value": 0.3745366036891937,
+          "idf": 3.7710299491882324
+        },
+        {
+          "index": 4217,
+          "term": "ผู้จัดการ",
+          "query_token_count": 1,
+          "raw_value": 4.254203796386719,
+          "normalized_value": 0.42252516746520996,
+          "idf": 4.254203796386719
+        },
+        {
+          "index": 5801,
+          "term": "อย่างไร",
+          "query_token_count": 1,
+          "raw_value": 6.70925760269165,
+          "normalized_value": 0.6663597226142883,
+          "idf": 6.70925760269165
+        },
+        {
+          "index": 74,
+          "term": "/18",
+          "query_token_count": 0,
+          "raw_value": 0.0,
+          "normalized_value": 0.0,
+          "idf": 7.0575642585754395
+        },
+        {
+          "index": 987,
+          "term": "218",
+          "query_token_count": 0,
+          "raw_value": 0.0,
+          "normalized_value": 0.0,
+          "idf": 6.284374713897705
+        },
+        {
+          "index": 1058,
+          "term": "2535",
+          "query_token_count": 0,
+          "raw_value": 0.0,
+          "normalized_value": 0.0,
+          "idf": 2.8380565643310547
+        },
+        {
+          "index": 2068,
+          "term": "การ",
+          "query_token_count": 0,
+          "raw_value": 0.0,
+          "normalized_value": 0.0,
+          "idf": 1.571730613708496
+        },
+        {
+          "index": 2156,
+          "term": "การบริหาร",
+          "query_token_count": 0,
+          "raw_value": 0.0,
+          "normalized_value": 0.0,
+          "idf": 4.224350929260254
+        }
+      ],
+      "statute_vectors": [
+        {
+          "statute_id": "S00755",
+          "law_name": "พระราชบัญญัติหลักทรัพย์และตลาดหลักทรัพย์ พ.ศ. 2535",
+          "section_num": "218/18",
+          "normalized_l2_norm": 1.0,
+          "coordinates": [
+            {
+              "index": 2046,
+              "value": 0.7787786722183228,
+              "term": "กองทุน",
+              "raw_value": 40.786521911621094
+            },
+            {
+              "index": 3379,
+              "value": 0.035744816064834595,
+              "term": "ต้อง",
+              "raw_value": 1.8720424175262451
+            },
+            {
+              "index": 3961,
+              "value": 0.0,
+              "term": "ปฏิบัติ",
+              "raw_value": 0.0
+            },
+            {
+              "index": 4217,
+              "value": 0.24368955194950104,
+              "term": "ผู้จัดการ",
+              "raw_value": 12.762611389160156
+            },
+            {
+              "index": 5801,
+              "value": 0.0,
+              "term": "อย่างไร",
+              "raw_value": 0.0
+            },
+            {
+              "index": 74,
+              "value": 0.13475728034973145,
+              "term": "/18",
+              "raw_value": 7.0575642585754395
+            },
+            {
+              "index": 987,
+              "value": 0.11999397724866867,
+              "term": "218",
+              "raw_value": 6.284374713897705
+            },
+            {
+              "index": 1058,
+              "value": 0.054189909249544144,
+              "term": "2535",
+              "raw_value": 2.8380565643310547
+            },
+            {
+              "index": 2068,
+              "value": 0.030010655522346497,
+              "term": "การ",
+              "raw_value": 1.571730613708496
+            },
+            {
+              "index": 2156,
+              "value": 0.08065984398126602,
+              "term": "การบริหาร",
+              "raw_value": 4.224350929260254
+            }
+          ],
+          "raw_norm": 52.37241744995117
+        },
+        {
+          "statute_id": "S04712",
+          "law_name": "พระราชบัญญัติกองทุนสำรองเลี้ยงชีพ พ.ศ. 2530",
+          "section_num": "35",
+          "normalized_l2_norm": 1.0,
+          "coordinates": [
+            {
+              "index": 2046,
+              "value": 0.1303289234638214,
+              "term": "กองทุน",
+              "raw_value": 4.531835556030273
+            },
+            {
+              "index": 3379,
+              "value": 0.053837183862924576,
+              "term": "ต้อง",
+              "raw_value": 1.8720424175262451
+            },
+            {
+              "index": 3961,
+              "value": 0.10844927281141281,
+              "term": "ปฏิบัติ",
+              "raw_value": 3.7710299491882324
+            },
+            {
+              "index": 4217,
+              "value": 0.12234463542699814,
+              "term": "ผู้จัดการ",
+              "raw_value": 4.254203796386719
+            },
+            {
+              "index": 5801,
+              "value": 0.0,
+              "term": "อย่างไร",
+              "raw_value": 0.0
+            },
+            {
+              "index": 74,
+              "value": 0.0,
+              "term": "/18",
+              "raw_value": 0.0
+            },
+            {
+              "index": 987,
+              "value": 0.0,
+              "term": "218",
+              "raw_value": 0.0
+            },
+            {
+              "index": 1058,
+              "value": 0.0,
+              "term": "2535",
+              "raw_value": 0.0
+            },
+            {
+              "index": 2068,
+              "value": 0.0,
+              "term": "การ",
+              "raw_value": 0.0
+            },
+            {
+              "index": 2156,
+              "value": 0.0,
+              "term": "การบริหาร",
+              "raw_value": 0.0
+            }
+          ],
+          "raw_norm": 34.77229309082031
+        }
+      ],
+      "representation": "term frequency × smoothed IDF, followed by L2 normalization"
+    }
+  },
+  {
+    "question_id": "pilot-04144",
+    "method": "R3 Word2Vec",
+    "method_key": "r3",
+    "statutes": [
+      {
+        "statute_id": "S00755",
+        "law_name": "พระราชบัญญัติหลักทรัพย์และตลาดหลักทรัพย์ พ.ศ. 2535",
+        "section_num": "218/18"
+      },
+      {
+        "statute_id": "S04712",
+        "law_name": "พระราชบัญญัติกองทุนสำรองเลี้ยงชีพ พ.ศ. 2530",
+        "section_num": "35"
+      }
+    ],
+    "embedding": {
+      "method": "R3 Word2Vec",
+      "dimension": 150,
+      "tokenizer": "PyThaiNLP newmm",
+      "tokens": [
+        "ผู้จัดการ",
+        "กองทุน",
+        "ต้อง",
+        "ปฏิบัติ",
+        "อย่างไร",
+        "?"
+      ],
+      "known_tokens": [
+        {
+          "token": "ผู้จัดการ",
+          "frequency": 326
+        },
+        {
+          "token": "กองทุน",
+          "frequency": 486
+        },
+        {
+          "token": "ต้อง",
+          "frequency": 3400
+        },
+        {
+          "token": "ปฏิบัติ",
+          "frequency": 368
+        },
+        {
+          "token": "อย่างไร",
+          "frequency": 16
+        }
+      ],
+      "out_of_vocabulary_tokens": [
+        "?"
+      ],
+      "raw_mean_norm": 2.10288143157959,
+      "normalized_query_norm": 0.9999999403953552,
+      "coordinates": [
+        {
+          "index": 1,
+          "raw_mean": -0.4682961106300354,
+          "normalized_value": -0.2226925939321518
+        },
+        {
+          "index": 57,
+          "raw_mean": 0.4606419503688812,
+          "normalized_value": 0.2190527468919754
+        },
+        {
+          "index": 68,
+          "raw_mean": 0.3962511122226715,
+          "normalized_value": 0.1884324550628662
+        },
+        {
+          "index": 100,
+          "raw_mean": 0.39347565174102783,
+          "normalized_value": 0.18711261451244354
+        },
+        {
+          "index": 23,
+          "raw_mean": 0.38053280115127563,
+          "normalized_value": 0.18095780909061432
+        },
+        {
+          "index": 78,
+          "raw_mean": -0.3509547710418701,
+          "normalized_value": -0.16689231991767883
+        },
+        {
+          "index": 21,
+          "raw_mean": 0.3488129675388336,
+          "normalized_value": 0.16587381064891815
+        },
+        {
+          "index": 26,
+          "raw_mean": -0.3350745737552643,
+          "normalized_value": -0.15934069454669952
+        },
+        {
+          "index": 84,
+          "raw_mean": -0.3179076313972473,
+          "normalized_value": -0.15117715299129486
+        },
+        {
+          "index": 20,
+          "raw_mean": 0.311603844165802,
+          "normalized_value": 0.14817947149276733
+        }
+      ],
+      "statute_vectors": [
+        {
+          "statute_id": "S00755",
+          "law_name": "พระราชบัญญัติหลักทรัพย์และตลาดหลักทรัพย์ พ.ศ. 2535",
+          "section_num": "218/18",
+          "normalized_l2_norm": 0.9999998807907104,
+          "coordinates": [
+            {
+              "index": 1,
+              "value": -0.30801454186439514
+            },
+            {
+              "index": 57,
+              "value": 0.15785585343837738
+            },
+            {
+              "index": 68,
+              "value": 0.23302879929542542
+            },
+            {
+              "index": 100,
+              "value": 0.16448204219341278
+            },
+            {
+              "index": 23,
+              "value": 0.1582900583744049
+            },
+            {
+              "index": 78,
+              "value": -0.09758215397596359
+            },
+            {
+              "index": 21,
+              "value": 0.15617479383945465
+            },
+            {
+              "index": 26,
+              "value": -0.10980559140443802
+            },
+            {
+              "index": 84,
+              "value": -0.09206559509038925
+            },
+            {
+              "index": 20,
+              "value": 0.08944113552570343
+            }
+          ]
+        },
+        {
+          "statute_id": "S04712",
+          "law_name": "พระราชบัญญัติกองทุนสำรองเลี้ยงชีพ พ.ศ. 2530",
+          "section_num": "35",
+          "normalized_l2_norm": 0.9999999403953552,
+          "coordinates": [
+            {
+              "index": 1,
+              "value": -0.22827622294425964
+            },
+            {
+              "index": 57,
+              "value": 0.10138003528118134
+            },
+            {
+              "index": 68,
+              "value": 0.0874619334936142
+            },
+            {
+              "index": 100,
+              "value": 0.20192213356494904
+            },
+            {
+              "index": 23,
+              "value": 0.11065153032541275
+            },
+            {
+              "index": 78,
+              "value": -0.0709875151515007
+            },
+            {
+              "index": 21,
+              "value": 0.11951696127653122
+            },
+            {
+              "index": 26,
+              "value": -0.13363288342952728
+            },
+            {
+              "index": 84,
+              "value": -0.0790870413184166
+            },
+            {
+              "index": 20,
+              "value": 0.1478005200624466
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "question_id": "pilot-04144",
+    "method": "R4 BGE-M3",
+    "method_key": "r4",
+    "statutes": [
+      {
+        "statute_id": "S00755",
+        "law_name": "พระราชบัญญัติหลักทรัพย์และตลาดหลักทรัพย์ พ.ศ. 2535",
+        "section_num": "218/18"
+      },
+      {
+        "statute_id": "S04712",
+        "law_name": "พระราชบัญญัติกองทุนสำรองเลี้ยงชีพ พ.ศ. 2530",
+        "section_num": "35"
+      }
+    ],
+    "embedding": {
+      "method": "R4 BGE-M3",
+      "model": "BAAI/bge-m3",
+      "model_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+      "dimension": 1024,
+      "tokenizer": "BGE-M3 model tokenizer",
+      "token_count": 9,
+      "token_budget": 4096,
+      "truncated": false,
+      "effective_token_count": 9,
+      "token_preview": [
+        "<s>",
+        "▁",
+        "ผู้จัดการ",
+        "กองทุน",
+        "ต้อง",
+        "ปฏิบัติ",
+        "อย่างไร",
+        "?",
+        "</s>"
+      ],
+      "normalized_query_norm": 1.0000001192092896,
+      "coordinates": [
+        {
+          "index": 386,
+          "value": 0.23137100040912628
+        },
+        {
+          "index": 297,
+          "value": -0.14682626724243164
+        },
+        {
+          "index": 780,
+          "value": -0.14518313109874725
+        },
+        {
+          "index": 446,
+          "value": 0.10330063849687576
+        },
+        {
+          "index": 376,
+          "value": -0.0942852646112442
+        },
+        {
+          "index": 572,
+          "value": 0.08902978152036667
+        },
+        {
+          "index": 839,
+          "value": 0.08902125805616379
+        },
+        {
+          "index": 551,
+          "value": 0.08860741555690765
+        },
+        {
+          "index": 722,
+          "value": 0.08357799798250198
+        },
+        {
+          "index": 278,
+          "value": 0.08077352494001389
+        }
+      ],
+      "statute_vectors": [
+        {
+          "statute_id": "S00755",
+          "law_name": "พระราชบัญญัติหลักทรัพย์และตลาดหลักทรัพย์ พ.ศ. 2535",
+          "section_num": "218/18",
+          "normalized_l2_norm": 1.0,
+          "coordinates": [
+            {
+              "index": 386,
+              "value": 0.23718483746051788
+            },
+            {
+              "index": 297,
+              "value": -0.15671570599079132
+            },
+            {
+              "index": 780,
+              "value": -0.12981292605400085
+            },
+            {
+              "index": 446,
+              "value": 0.04928641393780708
+            },
+            {
+              "index": 376,
+              "value": -0.08819949626922607
+            },
+            {
+              "index": 572,
+              "value": 0.11373012512922287
+            },
+            {
+              "index": 839,
+              "value": 0.04814035817980766
+            },
+            {
+              "index": 551,
+              "value": 0.04971444979310036
+            },
+            {
+              "index": 722,
+              "value": 0.055525731295347214
+            },
+            {
+              "index": 278,
+              "value": 0.06474271416664124
+            }
+          ],
+          "token_count": 97,
+          "truncated": false,
+          "token_preview": [
+            "<s>",
+            "▁",
+            "พระราชบัญญัติ",
+            "หลัก",
+            "ทรัพย์",
+            "และ",
+            "ตลาด",
+            "หลัก",
+            "ทรัพย์",
+            "▁พ"
+          ]
+        },
+        {
+          "statute_id": "S04712",
+          "law_name": "พระราชบัญญัติกองทุนสำรองเลี้ยงชีพ พ.ศ. 2530",
+          "section_num": "35",
+          "normalized_l2_norm": 0.9999999403953552,
+          "coordinates": [
+            {
+              "index": 386,
+              "value": 0.24620863795280457
+            },
+            {
+              "index": 297,
+              "value": -0.15488691627979279
+            },
+            {
+              "index": 780,
+              "value": -0.12544973194599152
+            },
+            {
+              "index": 446,
+              "value": 0.02979995869100094
+            },
+            {
+              "index": 376,
+              "value": -0.1454138159751892
+            },
+            {
+              "index": 572,
+              "value": 0.03565992787480354
+            },
+            {
+              "index": 839,
+              "value": 0.045637574046850204
+            },
+            {
+              "index": 551,
+              "value": 0.0730680525302887
+            },
+            {
+              "index": 722,
+              "value": 0.035306211560964584
+            },
+            {
+              "index": 278,
+              "value": 0.05492987483739853
+            }
+          ],
+          "token_count": 77,
+          "truncated": false,
+          "token_preview": [
+            "<s>",
+            "▁",
+            "พระราชบัญญัติ",
+            "กองทุน",
+            "สํารอง",
+            "เลี้ยง",
+            "ชีพ",
+            "▁พ",
+            ".",
+            "ศ"
+          ]
+        }
+      ],
+      "coordinate_note": "Dense dimensions do not map to individual words."
+    }
+  },
+  {
+    "question_id": "test-00016",
+    "method": "R1 Binary BoW",
+    "method_key": "r1",
+    "statutes": [
+      {
+        "statute_id": "S02926",
+        "law_name": "ประมวลกฎหมายแพ่งและพาณิชย์",
+        "section_num": "1262"
+      },
+      {
+        "statute_id": "S02922",
+        "law_name": "ประมวลกฎหมายแพ่งและพาณิชย์",
+        "section_num": "1258"
+      }
+    ],
+    "embedding": {
+      "method": "R1 Binary BoW",
+      "dimension": 7046,
+      "tokenizer": "PyThaiNLP newmm",
+      "tokens": [
+        "ถ้า",
+        "มีมติ",
+        "ของ",
+        "ที่ประชุม",
+        "ใหญ่",
+        "ให้อำนาจ",
+        "ผู้",
+        "ชำระบัญชี",
+        "ให้",
+        "ชำระบัญชี",
+        "แยกกัน",
+        "ได้",
+        "ต้อง",
+        "นำ",
+        "ความ",
+        "ไป",
+        "จดทะเบียน",
+        "ภายใน",
+        "กี่",
+        "วัน"
+      ],
+      "raw_query_norm": 4.358899116516113,
+      "normalized_query_norm": 0.9999999403953552,
+      "coordinates": [
+        {
+          "index": 2317,
+          "term": "กี่",
+          "query_token_count": 1,
+          "raw_value": 1.0,
+          "normalized_value": 0.22941572964191437
+        },
+        {
+          "index": 2372,
+          "term": "ของ",
+          "query_token_count": 1,
+          "raw_value": 1.0,
+          "normalized_value": 0.22941572964191437
+        },
+        {
+          "index": 2599,
+          "term": "ความ",
+          "query_token_count": 1,
+          "raw_value": 1.0,
+          "normalized_value": 0.22941572964191437
+        },
+        {
+          "index": 2887,
+          "term": "จดทะเบียน",
+          "query_token_count": 1,
+          "raw_value": 1.0,
+          "normalized_value": 0.22941572964191437
+        },
+        {
+          "index": 3032,
+          "term": "ชำระบัญชี",
+          "query_token_count": 2,
+          "raw_value": 1.0,
+          "normalized_value": 0.22941572964191437
+        },
+        {
+          "index": 3379,
+          "term": "ต้อง",
+          "query_token_count": 1,
+          "raw_value": 1.0,
+          "normalized_value": 0.22941572964191437
+        },
+        {
+          "index": 3457,
+          "term": "ถ้า",
+          "query_token_count": 1,
+          "raw_value": 1.0,
+          "normalized_value": 0.22941572964191437
+        },
+        {
+          "index": 3630,
+          "term": "ที่ประชุม",
+          "query_token_count": 1,
+          "raw_value": 1.0,
+          "normalized_value": 0.22941572964191437
+        },
+        {
+          "index": 3784,
+          "term": "นำ",
+          "query_token_count": 1,
+          "raw_value": 1.0,
+          "normalized_value": 0.22941572964191437
+        },
+        {
+          "index": 4201,
+          "term": "ผู้",
+          "query_token_count": 1,
+          "raw_value": 1.0,
+          "normalized_value": 0.22941572964191437
+        }
+      ],
+      "statute_vectors": [
+        {
+          "statute_id": "S02926",
+          "law_name": "ประมวลกฎหมายแพ่งและพาณิชย์",
+          "section_num": "1262",
+          "normalized_l2_norm": 1.0,
+          "coordinates": [
+            {
+              "index": 2317,
+              "value": 0.0,
+              "term": "กี่",
+              "raw_value": 0.0
+            },
+            {
+              "index": 2372,
+              "value": 0.17407765984535217,
+              "term": "ของ",
+              "raw_value": 1.0
+            },
+            {
+              "index": 2599,
+              "value": 0.17407765984535217,
+              "term": "ความ",
+              "raw_value": 1.0
+            },
+            {
+              "index": 2887,
+              "value": 0.17407765984535217,
+              "term": "จดทะเบียน",
+              "raw_value": 1.0
+            },
+            {
+              "index": 3032,
+              "value": 0.17407765984535217,
+              "term": "ชำระบัญชี",
+              "raw_value": 1.0
+            },
+            {
+              "index": 3379,
+              "value": 0.17407765984535217,
+              "term": "ต้อง",
+              "raw_value": 1.0
+            },
+            {
+              "index": 3457,
+              "value": 0.17407765984535217,
+              "term": "ถ้า",
+              "raw_value": 1.0
+            },
+            {
+              "index": 3630,
+              "value": 0.17407765984535217,
+              "term": "ที่ประชุม",
+              "raw_value": 1.0
+            },
+            {
+              "index": 3784,
+              "value": 0.17407765984535217,
+              "term": "นำ",
+              "raw_value": 1.0
+            },
+            {
+              "index": 4201,
+              "value": 0.17407765984535217,
+              "term": "ผู้",
+              "raw_value": 1.0
+            }
+          ],
+          "raw_norm": 5.74456262588501
+        },
+        {
+          "statute_id": "S02922",
+          "law_name": "ประมวลกฎหมายแพ่งและพาณิชย์",
+          "section_num": "1258",
+          "normalized_l2_norm": 1.0,
+          "coordinates": [
+            {
+              "index": 2317,
+              "value": 0.0,
+              "term": "กี่",
+              "raw_value": 0.0
+            },
+            {
+              "index": 2372,
+              "value": 0.0,
+              "term": "ของ",
+              "raw_value": 0.0
+            },
+            {
+              "index": 2599,
+              "value": 0.20000000298023224,
+              "term": "ความ",
+              "raw_value": 1.0
+            },
+            {
+              "index": 2887,
+              "value": 0.20000000298023224,
+              "term": "จดทะเบียน",
+              "raw_value": 1.0
+            },
+            {
+              "index": 3032,
+              "value": 0.20000000298023224,
+              "term": "ชำระบัญชี",
+              "raw_value": 1.0
+            },
+            {
+              "index": 3379,
+              "value": 0.20000000298023224,
+              "term": "ต้อง",
+              "raw_value": 1.0
+            },
+            {
+              "index": 3457,
+              "value": 0.0,
+              "term": "ถ้า",
+              "raw_value": 0.0
+            },
+            {
+              "index": 3630,
+              "value": 0.0,
+              "term": "ที่ประชุม",
+              "raw_value": 0.0
+            },
+            {
+              "index": 3784,
+              "value": 0.20000000298023224,
+              "term": "นำ",
+              "raw_value": 1.0
+            },
+            {
+              "index": 4201,
+              "value": 0.20000000298023224,
+              "term": "ผู้",
+              "raw_value": 1.0
+            }
+          ],
+          "raw_norm": 5.0
+        }
+      ],
+      "representation": "binary term presence, followed by L2 normalization"
+    }
+  },
+  {
+    "question_id": "test-00016",
+    "method": "R2 TF-IDF",
+    "method_key": "r2",
+    "statutes": [
+      {
+        "statute_id": "S02926",
+        "law_name": "ประมวลกฎหมายแพ่งและพาณิชย์",
+        "section_num": "1262"
+      },
+      {
+        "statute_id": "S02922",
+        "law_name": "ประมวลกฎหมายแพ่งและพาณิชย์",
+        "section_num": "1258"
+      }
+    ],
+    "embedding": {
+      "method": "R2 TF-IDF",
+      "dimension": 7046,
+      "tokenizer": "PyThaiNLP newmm",
+      "tokens": [
+        "ถ้า",
+        "มีมติ",
+        "ของ",
+        "ที่ประชุม",
+        "ใหญ่",
+        "ให้อำนาจ",
+        "ผู้",
+        "ชำระบัญชี",
+        "ให้",
+        "ชำระบัญชี",
+        "แยกกัน",
+        "ได้",
+        "ต้อง",
+        "นำ",
+        "ความ",
+        "ไป",
+        "จดทะเบียน",
+        "ภายใน",
+        "กี่",
+        "วัน"
+      ],
+      "raw_query_norm": 20.069801330566406,
+      "normalized_query_norm": 1.0,
+      "coordinates": [
+        {
+          "index": 2317,
+          "term": "กี่",
+          "query_token_count": 1,
+          "raw_value": 8.156176567077637,
+          "normalized_value": 0.406390517950058,
+          "idf": 8.156176567077637
+        },
+        {
+          "index": 2372,
+          "term": "ของ",
+          "query_token_count": 1,
+          "raw_value": 1.6029558181762695,
+          "normalized_value": 0.07986904680728912,
+          "idf": 1.6029558181762695
+        },
+        {
+          "index": 2599,
+          "term": "ความ",
+          "query_token_count": 1,
+          "raw_value": 3.1339423656463623,
+          "normalized_value": 0.15615214407444,
+          "idf": 3.1339423656463623
+        },
+        {
+          "index": 2887,
+          "term": "จดทะเบียน",
+          "query_token_count": 1,
+          "raw_value": 3.2790727615356445,
+          "normalized_value": 0.16338342428207397,
+          "idf": 3.2790727615356445
+        },
+        {
+          "index": 3032,
+          "term": "ชำระบัญชี",
+          "query_token_count": 2,
+          "raw_value": 9.595077514648438,
+          "normalized_value": 0.47808533906936646,
+          "idf": 4.797538757324219
+        },
+        {
+          "index": 3379,
+          "term": "ต้อง",
+          "query_token_count": 1,
+          "raw_value": 1.8720424175262451,
+          "normalized_value": 0.09327658265829086,
+          "idf": 1.8720424175262451
+        },
+        {
+          "index": 3457,
+          "term": "ถ้า",
+          "query_token_count": 1,
+          "raw_value": 2.4449219703674316,
+          "normalized_value": 0.12182094156742096,
+          "idf": 2.4449219703674316
+        },
+        {
+          "index": 3630,
+          "term": "ที่ประชุม",
+          "query_token_count": 1,
+          "raw_value": 4.284976005554199,
+          "normalized_value": 0.2135036587715149,
+          "idf": 4.284976005554199
+        },
+        {
+          "index": 3784,
+          "term": "นำ",
+          "query_token_count": 1,
+          "raw_value": 3.137242555618286,
+          "normalized_value": 0.1563165783882141,
+          "idf": 3.137242555618286
+        },
+        {
+          "index": 4201,
+          "term": "ผู้",
+          "query_token_count": 1,
+          "raw_value": 2.162838935852051,
+          "normalized_value": 0.10776583850383759,
+          "idf": 2.162838935852051
+        }
+      ],
+      "statute_vectors": [
+        {
+          "statute_id": "S02926",
+          "law_name": "ประมวลกฎหมายแพ่งและพาณิชย์",
+          "section_num": "1262",
+          "normalized_l2_norm": 1.0,
+          "coordinates": [
+            {
+              "index": 2317,
+              "value": 0.0,
+              "term": "กี่",
+              "raw_value": 0.0
+            },
+            {
+              "index": 2372,
+              "value": 0.11370501667261124,
+              "term": "ของ",
+              "raw_value": 3.205911636352539
+            },
+            {
+              "index": 2599,
+              "value": 0.11115246266126633,
+              "term": "ความ",
+              "raw_value": 3.1339423656463623
+            },
+            {
+              "index": 2887,
+              "value": 0.11629984527826309,
+              "term": "จดทะเบียน",
+              "raw_value": 3.2790727615356445
+            },
+            {
+              "index": 3032,
+              "value": 0.17015573382377625,
+              "term": "ชำระบัญชี",
+              "raw_value": 4.797538757324219
+            },
+            {
+              "index": 3379,
+              "value": 0.06639628112316132,
+              "term": "ต้อง",
+              "raw_value": 1.8720424175262451
+            },
+            {
+              "index": 3457,
+              "value": 0.08671477437019348,
+              "term": "ถ้า",
+              "raw_value": 2.4449219703674316
+            },
+            {
+              "index": 3630,
+              "value": 0.15197651088237762,
+              "term": "ที่ประชุม",
+              "raw_value": 4.284976005554199
+            },
+            {
+              "index": 3784,
+              "value": 0.111269511282444,
+              "term": "นำ",
+              "raw_value": 3.137242555618286
+            },
+            {
+              "index": 4201,
+              "value": 0.076710045337677,
+              "term": "ผู้",
+              "raw_value": 2.162838935852051
+            }
+          ],
+          "raw_norm": 28.194988250732422
+        },
+        {
+          "statute_id": "S02922",
+          "law_name": "ประมวลกฎหมายแพ่งและพาณิชย์",
+          "section_num": "1258",
+          "normalized_l2_norm": 1.0,
+          "coordinates": [
+            {
+              "index": 2317,
+              "value": 0.0,
+              "term": "กี่",
+              "raw_value": 0.0
+            },
+            {
+              "index": 2372,
+              "value": 0.0,
+              "term": "ของ",
+              "raw_value": 0.0
+            },
+            {
+              "index": 2599,
+              "value": 0.14140747487545013,
+              "term": "ความ",
+              "raw_value": 3.1339423656463623
+            },
+            {
+              "index": 2887,
+              "value": 0.14795595407485962,
+              "term": "จดทะเบียน",
+              "raw_value": 3.2790727615356445
+            },
+            {
+              "index": 3032,
+              "value": 0.43294215202331543,
+              "term": "ชำระบัญชี",
+              "raw_value": 9.595077514648438
+            },
+            {
+              "index": 3379,
+              "value": 0.08446894586086273,
+              "term": "ต้อง",
+              "raw_value": 1.8720424175262451
+            },
+            {
+              "index": 3457,
+              "value": 0.0,
+              "term": "ถ้า",
+              "raw_value": 0.0
+            },
+            {
+              "index": 3630,
+              "value": 0.0,
+              "term": "ที่ประชุม",
+              "raw_value": 0.0
+            },
+            {
+              "index": 3784,
+              "value": 0.14155638217926025,
+              "term": "นำ",
+              "raw_value": 3.137242555618286
+            },
+            {
+              "index": 4201,
+              "value": 0.19518010318279266,
+              "term": "ผู้",
+              "raw_value": 4.325677871704102
+            }
+          ],
+          "raw_norm": 22.162494659423828
+        }
+      ],
+      "representation": "term frequency × smoothed IDF, followed by L2 normalization"
+    }
+  },
+  {
+    "question_id": "test-00016",
+    "method": "R3 Word2Vec",
+    "method_key": "r3",
+    "statutes": [
+      {
+        "statute_id": "S02926",
+        "law_name": "ประมวลกฎหมายแพ่งและพาณิชย์",
+        "section_num": "1262"
+      },
+      {
+        "statute_id": "S02922",
+        "law_name": "ประมวลกฎหมายแพ่งและพาณิชย์",
+        "section_num": "1258"
+      }
+    ],
+    "embedding": {
+      "method": "R3 Word2Vec",
+      "dimension": 150,
+      "tokenizer": "PyThaiNLP newmm",
+      "tokens": [
+        "ถ้า",
+        "มีมติ",
+        "ของ",
+        "ที่ประชุม",
+        "ใหญ่",
+        "ให้อำนาจ",
+        "ผู้",
+        "ชำระบัญชี",
+        "ให้",
+        "ชำระบัญชี",
+        "แยกกัน",
+        "ได้",
+        "ต้อง",
+        "นำ",
+        "ความ",
+        "ไป",
+        "จดทะเบียน",
+        "ภายใน",
+        "กี่",
+        "วัน"
+      ],
+      "known_tokens": [
+        {
+          "token": "ถ้า",
+          "frequency": 1755
+        },
+        {
+          "token": "มีมติ",
+          "frequency": 79
+        },
+        {
+          "token": "ของ",
+          "frequency": 7401
+        },
+        {
+          "token": "ที่ประชุม",
+          "frequency": 328
+        },
+        {
+          "token": "ใหญ่",
+          "frequency": 197
+        },
+        {
+          "token": "ให้อำนาจ",
+          "frequency": 15
+        },
+        {
+          "token": "ผู้",
+          "frequency": 3334
+        },
+        {
+          "token": "ชำระบัญชี",
+          "frequency": 258
+        },
+        {
+          "token": "ให้",
+          "frequency": 10475
+        },
+        {
+          "token": "ชำระบัญชี",
+          "frequency": 258
+        },
+        {
+          "token": "แยกกัน",
+          "frequency": 11
+        },
+        {
+          "token": "ได้",
+          "frequency": 4867
+        },
+        {
+          "token": "ต้อง",
+          "frequency": 3400
+        },
+        {
+          "token": "นำ",
+          "frequency": 809
+        },
+        {
+          "token": "ความ",
+          "frequency": 846
+        },
+        {
+          "token": "ไป",
+          "frequency": 1268
+        },
+        {
+          "token": "จดทะเบียน",
+          "frequency": 1146
+        },
+        {
+          "token": "ภายใน",
+          "frequency": 1026
+        },
+        {
+          "token": "กี่",
+          "frequency": 3
+        },
+        {
+          "token": "วัน",
+          "frequency": 971
+        }
+      ],
+      "out_of_vocabulary_tokens": [],
+      "raw_mean_norm": 1.7849693298339844,
+      "normalized_query_norm": 1.0,
+      "coordinates": [
+        {
+          "index": 57,
+          "raw_mean": 0.5012927651405334,
+          "normalized_value": 0.2808411419391632
+        },
+        {
+          "index": 1,
+          "raw_mean": -0.41236886382102966,
+          "normalized_value": -0.23102295398712158
+        },
+        {
+          "index": 37,
+          "raw_mean": -0.39532190561294556,
+          "normalized_value": -0.22147268056869507
+        },
+        {
+          "index": 54,
+          "raw_mean": 0.3701193630695343,
+          "normalized_value": 0.2073533535003662
+        },
+        {
+          "index": 102,
+          "raw_mean": -0.3604065775871277,
+          "normalized_value": -0.20191192626953125
+        },
+        {
+          "index": 93,
+          "raw_mean": -0.30179697275161743,
+          "normalized_value": -0.1690768450498581
+        },
+        {
+          "index": 67,
+          "raw_mean": 0.27734315395355225,
+          "normalized_value": 0.15537700057029724
+        },
+        {
+          "index": 138,
+          "raw_mean": -0.27331647276878357,
+          "normalized_value": -0.15312111377716064
+        },
+        {
+          "index": 130,
+          "raw_mean": -0.2599608898162842,
+          "normalized_value": -0.1456388682126999
+        },
+        {
+          "index": 0,
+          "raw_mean": 0.2525171935558319,
+          "normalized_value": 0.14146865904331207
+        }
+      ],
+      "statute_vectors": [
+        {
+          "statute_id": "S02926",
+          "law_name": "ประมวลกฎหมายแพ่งและพาณิชย์",
+          "section_num": "1262",
+          "normalized_l2_norm": 1.0,
+          "coordinates": [
+            {
+              "index": 57,
+              "value": 0.22713176906108856
+            },
+            {
+              "index": 1,
+              "value": -0.22592021524906158
+            },
+            {
+              "index": 37,
+              "value": -0.24180658161640167
+            },
+            {
+              "index": 54,
+              "value": 0.21148860454559326
+            },
+            {
+              "index": 102,
+              "value": -0.17330653965473175
+            },
+            {
+              "index": 93,
+              "value": -0.190394788980484
+            },
+            {
+              "index": 67,
+              "value": 0.1336173266172409
+            },
+            {
+              "index": 138,
+              "value": -0.159019336104393
+            },
+            {
+              "index": 130,
+              "value": -0.14420785009860992
+            },
+            {
+              "index": 0,
+              "value": 0.14378398656845093
+            }
+          ]
+        },
+        {
+          "statute_id": "S02922",
+          "law_name": "ประมวลกฎหมายแพ่งและพาณิชย์",
+          "section_num": "1258",
+          "normalized_l2_norm": 0.9999999403953552,
+          "coordinates": [
+            {
+              "index": 57,
+              "value": 0.21297404170036316
+            },
+            {
+              "index": 1,
+              "value": -0.20148052275180817
+            },
+            {
+              "index": 37,
+              "value": -0.2449166178703308
+            },
+            {
+              "index": 54,
+              "value": 0.23759518563747406
+            },
+            {
+              "index": 102,
+              "value": -0.16885772347450256
+            },
+            {
+              "index": 93,
+              "value": -0.15695054829120636
+            },
+            {
+              "index": 67,
+              "value": 0.16668681800365448
+            },
+            {
+              "index": 138,
+              "value": -0.12474266439676285
+            },
+            {
+              "index": 130,
+              "value": -0.11042821407318115
+            },
+            {
+              "index": 0,
+              "value": 0.20363843441009521
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "question_id": "test-00016",
+    "method": "R4 BGE-M3",
+    "method_key": "r4",
+    "statutes": [
+      {
+        "statute_id": "S02926",
+        "law_name": "ประมวลกฎหมายแพ่งและพาณิชย์",
+        "section_num": "1262"
+      },
+      {
+        "statute_id": "S02922",
+        "law_name": "ประมวลกฎหมายแพ่งและพาณิชย์",
+        "section_num": "1258"
+      }
+    ],
+    "embedding": {
+      "method": "R4 BGE-M3",
+      "model": "BAAI/bge-m3",
+      "model_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+      "dimension": 1024,
+      "tokenizer": "BGE-M3 model tokenizer",
+      "token_count": 27,
+      "token_budget": 4096,
+      "truncated": false,
+      "effective_token_count": 27,
+      "token_preview": [
+        "<s>",
+        "▁",
+        "ถ้ามี",
+        "มติ",
+        "ของ",
+        "ที่",
+        "ประชุม",
+        "ใหญ่",
+        "ให้",
+        "อํานาจ"
+      ],
+      "normalized_query_norm": 0.9999999403953552,
+      "coordinates": [
+        {
+          "index": 386,
+          "value": 0.21438252925872803
+        },
+        {
+          "index": 780,
+          "value": -0.19348976016044617
+        },
+        {
+          "index": 297,
+          "value": -0.15357643365859985
+        },
+        {
+          "index": 577,
+          "value": 0.12212809175252914
+        },
+        {
+          "index": 376,
+          "value": -0.11216618120670319
+        },
+        {
+          "index": 292,
+          "value": 0.1010131761431694
+        },
+        {
+          "index": 411,
+          "value": -0.10013552010059357
+        },
+        {
+          "index": 240,
+          "value": -0.09811156243085861
+        },
+        {
+          "index": 670,
+          "value": -0.0947771966457367
+        },
+        {
+          "index": 943,
+          "value": -0.09280810505151749
+        }
+      ],
+      "statute_vectors": [
+        {
+          "statute_id": "S02926",
+          "law_name": "ประมวลกฎหมายแพ่งและพาณิชย์",
+          "section_num": "1262",
+          "normalized_l2_norm": 1.0000001192092896,
+          "coordinates": [
+            {
+              "index": 386,
+              "value": 0.22165673971176147
+            },
+            {
+              "index": 780,
+              "value": -0.1585703343153
+            },
+            {
+              "index": 297,
+              "value": -0.15552133321762085
+            },
+            {
+              "index": 577,
+              "value": 0.12105768918991089
+            },
+            {
+              "index": 376,
+              "value": -0.08148254454135895
+            },
+            {
+              "index": 292,
+              "value": 0.06969694793224335
+            },
+            {
+              "index": 411,
+              "value": -0.0724143236875534
+            },
+            {
+              "index": 240,
+              "value": -0.07990077137947083
+            },
+            {
+              "index": 670,
+              "value": -0.05431509017944336
+            },
+            {
+              "index": 943,
+              "value": -0.06068699061870575
+            }
+          ],
+          "token_count": 55,
+          "truncated": false,
+          "token_preview": [
+            "<s>",
+            "▁",
+            "ประ",
+            "มวล",
+            "กฎหมาย",
+            "แพ",
+            "่ง",
+            "และ",
+            "พาณิชย์",
+            "▁"
+          ]
+        },
+        {
+          "statute_id": "S02922",
+          "law_name": "ประมวลกฎหมายแพ่งและพาณิชย์",
+          "section_num": "1258",
+          "normalized_l2_norm": 1.0,
+          "coordinates": [
+            {
+              "index": 386,
+              "value": 0.20326080918312073
+            },
+            {
+              "index": 780,
+              "value": -0.14121665060520172
+            },
+            {
+              "index": 297,
+              "value": -0.1379348635673523
+            },
+            {
+              "index": 577,
+              "value": 0.0930914506316185
+            },
+            {
+              "index": 376,
+              "value": -0.10267248749732971
+            },
+            {
+              "index": 292,
+              "value": 0.06106624752283096
+            },
+            {
+              "index": 411,
+              "value": -0.0682857483625412
+            },
+            {
+              "index": 240,
+              "value": -0.07827024906873703
+            },
+            {
+              "index": 670,
+              "value": -0.07647839188575745
+            },
+            {
+              "index": 943,
+              "value": -0.0514497272670269
+            }
+          ],
+          "token_count": 43,
+          "truncated": false,
+          "token_preview": [
+            "<s>",
+            "▁",
+            "ประ",
+            "มวล",
+            "กฎหมาย",
+            "แพ",
+            "่ง",
+            "และ",
+            "พาณิชย์",
+            "▁"
+          ]
+        }
+      ],
+      "coordinate_note": "Dense dimensions do not map to individual words."
+    }
+  }
+]

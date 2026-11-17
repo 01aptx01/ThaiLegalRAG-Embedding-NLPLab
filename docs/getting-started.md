@@ -10,7 +10,7 @@
 ถ้ายังไม่มีโค้ดในเครื่อง ให้ clone repo แล้วเปิด terminal ในโฟลเดอร์โปรเจกต์
 
 ```bash
-git clone https://github.com/01aptx01/ThaiLegal-Embedding-NLPLab.git
+git clone https://github.com/01aptx01/ThaiLegalRAG-Embedding-NLPLab.git
 cd ThaiLegal-Embedding-NLPLab
 ```
 

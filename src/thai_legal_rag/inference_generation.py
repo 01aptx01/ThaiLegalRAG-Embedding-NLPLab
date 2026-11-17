@@ -11,11 +11,12 @@ import threading
 from time import perf_counter
 from typing import Any, Mapping, Sequence
 
+from .config import RunConfig
 from .generation import ABSTAIN_TEXT, _CITATION_RE, _make_prompt
 
 
-DEFAULT_MODEL_ID = "typhoon-ai/llama3.2-typhoon2-1b-instruct"
-DEFAULT_MAX_INPUT_TOKENS = 4096
+DEFAULT_MODEL_ID = RunConfig.generator_id
+DEFAULT_MAX_INPUT_TOKENS = RunConfig.max_input_tokens
 
 
 class LiveGenerator:
@@ -27,7 +28,7 @@ class LiveGenerator:
         tokenizer: Any,
         model_id: str = DEFAULT_MODEL_ID,
         device: Any = "cpu",
-        max_new_tokens: int = 256,
+        max_new_tokens: int = RunConfig.max_new_tokens,
         max_input_tokens: int = DEFAULT_MAX_INPUT_TOKENS,
         revision: str | None = None,
     ) -> None:
@@ -48,7 +49,7 @@ class LiveGenerator:
         cls,
         device: Any = "auto",
         revision: str | None = None,
-        max_new_tokens: int = 256,
+        max_new_tokens: int = RunConfig.max_new_tokens,
     ) -> "LiveGenerator":
         """Load the default Typhoon instruct checkpoint onto the selected device."""
         import torch

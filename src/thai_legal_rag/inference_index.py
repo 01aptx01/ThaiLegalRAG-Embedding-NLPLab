@@ -194,21 +194,15 @@ class InferenceIndex:
             raise ValueError("limit must be non-negative")
         if limit == 0:
             return []
-        key = method
+        query_vectors = self._encode_query(question, method)
+        return rank_exact(query_vectors, self.matrices[method], self.ids, min(limit, len(self.ids)))[0]
+
+    def _encode_query(self, question: str, method: str):
+        """Return one normalized query vector for a method present in the index."""
         query = search_text(question)
-        if key in {"r1", "r2"}:
-            q = normalize(self.vectorizers[key].transform([_tokenize(query)]))
-            if q.nnz == 0:
-                return []
-            query_vectors = q
-        elif key == "r3":
-            q = _word2vec_average([_tokenize(query)], self.w2v)[0]
-            if not np.any(q):
-                return []
-            query_vectors = q[None, :]
-        else:
-            q = normalize(self.encoder.encode([query], show_progress_bar=False).astype(np.float32))[0]
-            if not np.any(q):
-                return []
-            query_vectors = q[None, :]
-        return rank_exact(query_vectors, self.matrices[key], self.ids, min(limit, len(self.ids)))[0]
+        if method in {"r1", "r2"}:
+            return normalize(self.vectorizers[method].transform([_tokenize(query)]))
+        if method == "r3":
+            return _word2vec_average([_tokenize(query)], self.w2v)
+        vectors = self.encoder.encode([query], show_progress_bar=False).astype(np.float32)
+        return normalize(vectors)
