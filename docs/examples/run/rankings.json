@@ -1,0 +1,1262 @@
+[
+  {
+    "question_id": "pilot-04144",
+    "question": "ผู้จัดการกองทุนต้องปฏิบัติอย่างไร?",
+    "method": "R1 Binary BoW",
+    "method_key": "r1",
+    "gold_ids": [
+      "S00755"
+    ],
+    "retrieved_ids": [
+      "S04712",
+      "S03802",
+      "S04711",
+      "S00754",
+      "S00861",
+      "S00755",
+      "S02741",
+      "S03725",
+      "S00111",
+      "S04778"
+    ],
+    "ranked": [
+      {
+        "rank": 1,
+        "statute_id": "S04712",
+        "cosine": 0.2901904881000519,
+        "is_gold": false
+      },
+      {
+        "rank": 2,
+        "statute_id": "S03802",
+        "cosine": 0.2176428735256195,
+        "is_gold": false
+      },
+      {
+        "rank": 3,
+        "statute_id": "S04711",
+        "cosine": 0.21483445167541504,
+        "is_gold": false
+      },
+      {
+        "rank": 4,
+        "statute_id": "S00754",
+        "cosine": 0.2121320217847824,
+        "is_gold": false
+      },
+      {
+        "rank": 5,
+        "statute_id": "S00861",
+        "cosine": 0.20000001788139343,
+        "is_gold": false
+      },
+      {
+        "rank": 6,
+        "statute_id": "S00755",
+        "cosine": 0.19569841027259827,
+        "is_gold": true
+      },
+      {
+        "rank": 7,
+        "statute_id": "S02741",
+        "cosine": 0.1951800137758255,
+        "is_gold": false
+      },
+      {
+        "rank": 8,
+        "statute_id": "S03725",
+        "cosine": 0.18786728382110596,
+        "is_gold": false
+      },
+      {
+        "rank": 9,
+        "statute_id": "S00111",
+        "cosine": 0.18650095164775848,
+        "is_gold": false
+      },
+      {
+        "rank": 10,
+        "statute_id": "S04778",
+        "cosine": 0.18650095164775848,
+        "is_gold": false
+      }
+    ],
+    "gold_ranks": {
+      "S00755": 6
+    },
+    "metrics": {
+      "recall_at_5": 0.0,
+      "hit_at_5": 0,
+      "ndcg_at_5": 0.0,
+      "rr_at_10": 0.16666666666666666
+    },
+    "empty_retrieval": false,
+    "cosine_examples": [
+      {
+        "statute_id": "S00755",
+        "query_l2": 0.9999999403953552,
+        "statute_l2": 1.0,
+        "normalized_dot_product": 0.19569841027259827,
+        "largest_coordinate_products": [
+          {
+            "coordinate": 2046,
+            "query_value": 0.4472135901451111,
+            "statute_value": 0.14586499333381653,
+            "product": 0.06523280590772629
+          },
+          {
+            "coordinate": 3379,
+            "query_value": 0.4472135901451111,
+            "statute_value": 0.14586499333381653,
+            "product": 0.06523280590772629
+          },
+          {
+            "coordinate": 4217,
+            "query_value": 0.4472135901451111,
+            "statute_value": 0.14586499333381653,
+            "product": 0.06523280590772629
+          }
+        ]
+      },
+      {
+        "statute_id": "S04712",
+        "query_l2": 0.9999999403953552,
+        "statute_l2": 0.9999999403953552,
+        "normalized_dot_product": 0.2901904881000519,
+        "largest_coordinate_products": [
+          {
+            "coordinate": 2046,
+            "query_value": 0.4472135901451111,
+            "statute_value": 0.16222141683101654,
+            "product": 0.07254762202501297
+          },
+          {
+            "coordinate": 3379,
+            "query_value": 0.4472135901451111,
+            "statute_value": 0.16222141683101654,
+            "product": 0.07254762202501297
+          },
+          {
+            "coordinate": 3961,
+            "query_value": 0.4472135901451111,
+            "statute_value": 0.16222141683101654,
+            "product": 0.07254762202501297
+          },
+          {
+            "coordinate": 4217,
+            "query_value": 0.4472135901451111,
+            "statute_value": 0.16222141683101654,
+            "product": 0.07254762202501297
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "question_id": "pilot-04144",
+    "question": "ผู้จัดการกองทุนต้องปฏิบัติอย่างไร?",
+    "method": "R2 TF-IDF",
+    "method_key": "r2",
+    "gold_ids": [
+      "S00755"
+    ],
+    "retrieved_ids": [
+      "S04693",
+      "S04684",
+      "S00755",
+      "S04694",
+      "S00754",
+      "S04682",
+      "S04707",
+      "S04687",
+      "S00646",
+      "S00738"
+    ],
+    "ranked": [
+      {
+        "rank": 1,
+        "statute_id": "S04693",
+        "cosine": 0.4861740469932556,
+        "is_gold": false
+      },
+      {
+        "rank": 2,
+        "statute_id": "S04684",
+        "cosine": 0.46108436584472656,
+        "is_gold": false
+      },
+      {
+        "rank": 3,
+        "statute_id": "S00755",
+        "cosine": 0.46013882756233215,
+        "is_gold": true
+      },
+      {
+        "rank": 4,
+        "statute_id": "S04694",
+        "cosine": 0.45288363099098206,
+        "is_gold": false
+      },
+      {
+        "rank": 5,
+        "statute_id": "S00754",
+        "cosine": 0.44703805446624756,
+        "is_gold": false
+      },
+      {
+        "rank": 6,
+        "statute_id": "S04682",
+        "cosine": 0.4163095951080322,
+        "is_gold": false
+      },
+      {
+        "rank": 7,
+        "statute_id": "S04707",
+        "cosine": 0.40504980087280273,
+        "is_gold": false
+      },
+      {
+        "rank": 8,
+        "statute_id": "S04687",
+        "cosine": 0.342792272567749,
+        "is_gold": false
+      },
+      {
+        "rank": 9,
+        "statute_id": "S00646",
+        "cosine": 0.3398541808128357,
+        "is_gold": false
+      },
+      {
+        "rank": 10,
+        "statute_id": "S00738",
+        "cosine": 0.3160206079483032,
+        "is_gold": false
+      }
+    ],
+    "gold_ranks": {
+      "S00755": 3
+    },
+    "metrics": {
+      "recall_at_5": 1.0,
+      "hit_at_5": 1,
+      "ndcg_at_5": 0.5,
+      "rr_at_10": 0.3333333333333333
+    },
+    "empty_retrieval": false,
+    "cosine_examples": [
+      {
+        "statute_id": "S00755",
+        "query_l2": 1.0,
+        "statute_l2": 1.0,
+        "normalized_dot_product": 0.46013882756233215,
+        "largest_coordinate_products": [
+          {
+            "coordinate": 2046,
+            "query_value": 0.4500994086265564,
+            "statute_value": 0.7787786722183228,
+            "product": 0.350527822971344
+          },
+          {
+            "coordinate": 4217,
+            "query_value": 0.42252516746520996,
+            "statute_value": 0.24368955194950104,
+            "product": 0.10296496748924255
+          },
+          {
+            "coordinate": 3379,
+            "query_value": 0.18593022227287292,
+            "statute_value": 0.035744816064834595,
+            "product": 0.0066460417583584785
+          }
+        ]
+      },
+      {
+        "statute_id": "S04712",
+        "query_l2": 1.0,
+        "statute_l2": 1.0,
+        "normalized_dot_product": 0.16098284721374512,
+        "largest_coordinate_products": [
+          {
+            "coordinate": 2046,
+            "query_value": 0.4500994086265564,
+            "statute_value": 0.1303289234638214,
+            "product": 0.058660972863435745
+          },
+          {
+            "coordinate": 4217,
+            "query_value": 0.42252516746520996,
+            "statute_value": 0.12234463542699814,
+            "product": 0.051693689078092575
+          },
+          {
+            "coordinate": 3961,
+            "query_value": 0.3745366036891937,
+            "statute_value": 0.10844927281141281,
+            "product": 0.04061822220683098
+          },
+          {
+            "coordinate": 3379,
+            "query_value": 0.18593022227287292,
+            "statute_value": 0.053837183862924576,
+            "product": 0.01000995934009552
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "question_id": "pilot-04144",
+    "question": "ผู้จัดการกองทุนต้องปฏิบัติอย่างไร?",
+    "method": "R3 Word2Vec",
+    "method_key": "r3",
+    "gold_ids": [
+      "S00755"
+    ],
+    "retrieved_ids": [
+      "S04684",
+      "S00755",
+      "S00754",
+      "S04693",
+      "S04682",
+      "S04700",
+      "S00646",
+      "S04718",
+      "S00645",
+      "S04698"
+    ],
+    "ranked": [
+      {
+        "rank": 1,
+        "statute_id": "S04684",
+        "cosine": 0.8415930271148682,
+        "is_gold": false
+      },
+      {
+        "rank": 2,
+        "statute_id": "S00755",
+        "cosine": 0.8271180391311646,
+        "is_gold": true
+      },
+      {
+        "rank": 3,
+        "statute_id": "S00754",
+        "cosine": 0.8245275616645813,
+        "is_gold": false
+      },
+      {
+        "rank": 4,
+        "statute_id": "S04693",
+        "cosine": 0.8202159404754639,
+        "is_gold": false
+      },
+      {
+        "rank": 5,
+        "statute_id": "S04682",
+        "cosine": 0.8068397045135498,
+        "is_gold": false
+      },
+      {
+        "rank": 6,
+        "statute_id": "S04700",
+        "cosine": 0.801525890827179,
+        "is_gold": false
+      },
+      {
+        "rank": 7,
+        "statute_id": "S00646",
+        "cosine": 0.7954353094100952,
+        "is_gold": false
+      },
+      {
+        "rank": 8,
+        "statute_id": "S04718",
+        "cosine": 0.7942153215408325,
+        "is_gold": false
+      },
+      {
+        "rank": 9,
+        "statute_id": "S00645",
+        "cosine": 0.7898509502410889,
+        "is_gold": false
+      },
+      {
+        "rank": 10,
+        "statute_id": "S04698",
+        "cosine": 0.7857146263122559,
+        "is_gold": false
+      }
+    ],
+    "gold_ranks": {
+      "S00755": 2
+    },
+    "metrics": {
+      "recall_at_5": 1.0,
+      "hit_at_5": 1,
+      "ndcg_at_5": 0.6309297535714575,
+      "rr_at_10": 0.5
+    },
+    "empty_retrieval": false,
+    "cosine_examples": [
+      {
+        "statute_id": "S00755",
+        "query_l2": 0.9999999403953552,
+        "statute_l2": 0.9999998807907104,
+        "normalized_dot_product": 0.8271180987358093,
+        "largest_coordinate_products": [
+          {
+            "coordinate": 1,
+            "query_value": -0.2226925939321518,
+            "statute_value": -0.30801454186439514,
+            "product": 0.06859255582094193
+          },
+          {
+            "coordinate": 68,
+            "query_value": 0.1884324550628662,
+            "statute_value": 0.23302879929542542,
+            "product": 0.0439101904630661
+          },
+          {
+            "coordinate": 57,
+            "query_value": 0.2190527468919754,
+            "statute_value": 0.15785585343837738,
+            "product": 0.03457875922322273
+          },
+          {
+            "coordinate": 100,
+            "query_value": 0.18711261451244354,
+            "statute_value": 0.16448204219341278,
+            "product": 0.03077666461467743
+          }
+        ]
+      },
+      {
+        "statute_id": "S04712",
+        "query_l2": 0.9999999403953552,
+        "statute_l2": 0.9999999403953552,
+        "normalized_dot_product": 0.6904592514038086,
+        "largest_coordinate_products": [
+          {
+            "coordinate": 1,
+            "query_value": -0.2226925939321518,
+            "statute_value": -0.22827622294425964,
+            "product": 0.05083542317152023
+          },
+          {
+            "coordinate": 100,
+            "query_value": 0.18711261451244354,
+            "statute_value": 0.20192213356494904,
+            "product": 0.037782177329063416
+          },
+          {
+            "coordinate": 37,
+            "query_value": -0.13915707170963287,
+            "statute_value": -0.2226538509130478,
+            "product": 0.030983857810497284
+          },
+          {
+            "coordinate": 57,
+            "query_value": 0.2190527468919754,
+            "statute_value": 0.10138003528118134,
+            "product": 0.022207574918866158
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "question_id": "pilot-04144",
+    "question": "ผู้จัดการกองทุนต้องปฏิบัติอย่างไร?",
+    "method": "R4 BGE-M3",
+    "method_key": "r4",
+    "gold_ids": [
+      "S00755"
+    ],
+    "retrieved_ids": [
+      "S00755",
+      "S00754",
+      "S00646",
+      "S00645",
+      "S04682",
+      "S04684",
+      "S04694",
+      "S04687",
+      "S04712",
+      "S04711"
+    ],
+    "ranked": [
+      {
+        "rank": 1,
+        "statute_id": "S00755",
+        "cosine": 0.6670773029327393,
+        "is_gold": true
+      },
+      {
+        "rank": 2,
+        "statute_id": "S00754",
+        "cosine": 0.6533252000808716,
+        "is_gold": false
+      },
+      {
+        "rank": 3,
+        "statute_id": "S00646",
+        "cosine": 0.6235671043395996,
+        "is_gold": false
+      },
+      {
+        "rank": 4,
+        "statute_id": "S00645",
+        "cosine": 0.614022970199585,
+        "is_gold": false
+      },
+      {
+        "rank": 5,
+        "statute_id": "S04682",
+        "cosine": 0.6051535606384277,
+        "is_gold": false
+      },
+      {
+        "rank": 6,
+        "statute_id": "S04684",
+        "cosine": 0.5960140228271484,
+        "is_gold": false
+      },
+      {
+        "rank": 7,
+        "statute_id": "S04694",
+        "cosine": 0.5924904346466064,
+        "is_gold": false
+      },
+      {
+        "rank": 8,
+        "statute_id": "S04687",
+        "cosine": 0.5906779170036316,
+        "is_gold": false
+      },
+      {
+        "rank": 9,
+        "statute_id": "S04712",
+        "cosine": 0.5817782878875732,
+        "is_gold": false
+      },
+      {
+        "rank": 10,
+        "statute_id": "S04711",
+        "cosine": 0.5786712169647217,
+        "is_gold": false
+      }
+    ],
+    "gold_ranks": {
+      "S00755": 1
+    },
+    "metrics": {
+      "recall_at_5": 1.0,
+      "hit_at_5": 1,
+      "ndcg_at_5": 1.0,
+      "rr_at_10": 1.0
+    },
+    "empty_retrieval": false,
+    "cosine_examples": [
+      {
+        "statute_id": "S00755",
+        "query_l2": 1.0000001192092896,
+        "statute_l2": 1.0,
+        "normalized_dot_product": 0.6670773029327393,
+        "largest_coordinate_products": [
+          {
+            "coordinate": 386,
+            "query_value": 0.23137100040912628,
+            "statute_value": 0.23718483746051788,
+            "product": 0.05487769469618797
+          },
+          {
+            "coordinate": 297,
+            "query_value": -0.14682626724243164,
+            "statute_value": -0.15671570599079132,
+            "product": 0.023009981960058212
+          },
+          {
+            "coordinate": 780,
+            "query_value": -0.14518313109874725,
+            "statute_value": -0.12981292605400085,
+            "product": 0.018846647813916206
+          },
+          {
+            "coordinate": 572,
+            "query_value": 0.08902978152036667,
+            "statute_value": 0.11373012512922287,
+            "product": 0.010125367902219296
+          }
+        ]
+      },
+      {
+        "statute_id": "S04712",
+        "query_l2": 1.0000001192092896,
+        "statute_l2": 0.9999999403953552,
+        "normalized_dot_product": 0.5817782282829285,
+        "largest_coordinate_products": [
+          {
+            "coordinate": 386,
+            "query_value": 0.23137100040912628,
+            "statute_value": 0.24620863795280457,
+            "product": 0.05696553736925125
+          },
+          {
+            "coordinate": 297,
+            "query_value": -0.14682626724243164,
+            "statute_value": -0.15488691627979279,
+            "product": 0.022741468623280525
+          },
+          {
+            "coordinate": 780,
+            "query_value": -0.14518313109874725,
+            "statute_value": -0.12544973194599152,
+            "product": 0.01821318455040455
+          },
+          {
+            "coordinate": 376,
+            "query_value": -0.0942852646112442,
+            "statute_value": -0.1454138159751892,
+            "product": 0.013710380531847477
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "question_id": "test-00016",
+    "question": "ถ้ามีมติของที่ประชุมใหญ่ให้อำนาจผู้ชำระบัญชีให้ชำระบัญชีแยกกันได้ต้องนำความไปจดทะเบียนภายในกี่วัน",
+    "method": "R1 Binary BoW",
+    "method_key": "r1",
+    "gold_ids": [
+      "S02926"
+    ],
+    "retrieved_ids": [
+      "S02926",
+      "S02922",
+      "S02934",
+      "S02814",
+      "S01693",
+      "S02716",
+      "S02732",
+      "S01584",
+      "S04591",
+      "S02896"
+    ],
+    "ranked": [
+      {
+        "rank": 1,
+        "statute_id": "S02926",
+        "cosine": 0.6789147853851318,
+        "is_gold": true
+      },
+      {
+        "rank": 2,
+        "statute_id": "S02922",
+        "cosine": 0.4129483103752136,
+        "is_gold": false
+      },
+      {
+        "rank": 3,
+        "statute_id": "S02934",
+        "cosine": 0.3950291574001312,
+        "is_gold": false
+      },
+      {
+        "rank": 4,
+        "statute_id": "S02814",
+        "cosine": 0.3684210479259491,
+        "is_gold": false
+      },
+      {
+        "rank": 5,
+        "statute_id": "S01693",
+        "cosine": 0.36424633860588074,
+        "is_gold": false
+      },
+      {
+        "rank": 6,
+        "statute_id": "S02716",
+        "cosine": 0.35043835639953613,
+        "is_gold": false
+      },
+      {
+        "rank": 7,
+        "statute_id": "S02732",
+        "cosine": 0.35043835639953613,
+        "is_gold": false
+      },
+      {
+        "rank": 8,
+        "statute_id": "S01584",
+        "cosine": 0.343414843082428,
+        "is_gold": false
+      },
+      {
+        "rank": 9,
+        "statute_id": "S04591",
+        "cosine": 0.343414843082428,
+        "is_gold": false
+      },
+      {
+        "rank": 10,
+        "statute_id": "S02896",
+        "cosine": 0.34238117933273315,
+        "is_gold": false
+      }
+    ],
+    "gold_ranks": {
+      "S02926": 1
+    },
+    "metrics": {
+      "recall_at_5": 1.0,
+      "hit_at_5": 1,
+      "ndcg_at_5": 1.0,
+      "rr_at_10": 1.0
+    },
+    "empty_retrieval": false,
+    "cosine_examples": [
+      {
+        "statute_id": "S02926",
+        "query_l2": 0.9999999403953552,
+        "statute_l2": 1.0,
+        "normalized_dot_product": 0.6789147853851318,
+        "largest_coordinate_products": [
+          {
+            "coordinate": 2372,
+            "query_value": 0.22941572964191437,
+            "statute_value": 0.17407765984535217,
+            "product": 0.03993615508079529
+          },
+          {
+            "coordinate": 2599,
+            "query_value": 0.22941572964191437,
+            "statute_value": 0.17407765984535217,
+            "product": 0.03993615508079529
+          },
+          {
+            "coordinate": 2887,
+            "query_value": 0.22941572964191437,
+            "statute_value": 0.17407765984535217,
+            "product": 0.03993615508079529
+          },
+          {
+            "coordinate": 3032,
+            "query_value": 0.22941572964191437,
+            "statute_value": 0.17407765984535217,
+            "product": 0.03993615508079529
+          }
+        ]
+      },
+      {
+        "statute_id": "S02922",
+        "query_l2": 0.9999999403953552,
+        "statute_l2": 1.0,
+        "normalized_dot_product": 0.4129483103752136,
+        "largest_coordinate_products": [
+          {
+            "coordinate": 2599,
+            "query_value": 0.22941572964191437,
+            "statute_value": 0.20000000298023224,
+            "product": 0.045883145183324814
+          },
+          {
+            "coordinate": 2887,
+            "query_value": 0.22941572964191437,
+            "statute_value": 0.20000000298023224,
+            "product": 0.045883145183324814
+          },
+          {
+            "coordinate": 3032,
+            "query_value": 0.22941572964191437,
+            "statute_value": 0.20000000298023224,
+            "product": 0.045883145183324814
+          },
+          {
+            "coordinate": 3379,
+            "query_value": 0.22941572964191437,
+            "statute_value": 0.20000000298023224,
+            "product": 0.045883145183324814
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "question_id": "test-00016",
+    "question": "ถ้ามีมติของที่ประชุมใหญ่ให้อำนาจผู้ชำระบัญชีให้ชำระบัญชีแยกกันได้ต้องนำความไปจดทะเบียนภายในกี่วัน",
+    "method": "R2 TF-IDF",
+    "method_key": "r2",
+    "gold_ids": [
+      "S02926"
+    ],
+    "retrieved_ids": [
+      "S02926",
+      "S02934",
+      "S02925",
+      "S04706",
+      "S04353",
+      "S04356",
+      "S00665",
+      "S04347",
+      "S04355",
+      "S02922"
+    ],
+    "ranked": [
+      {
+        "rank": 1,
+        "statute_id": "S02926",
+        "cosine": 0.504217803478241,
+        "is_gold": true
+      },
+      {
+        "rank": 2,
+        "statute_id": "S02934",
+        "cosine": 0.46927618980407715,
+        "is_gold": false
+      },
+      {
+        "rank": 3,
+        "statute_id": "S02925",
+        "cosine": 0.40825796127319336,
+        "is_gold": false
+      },
+      {
+        "rank": 4,
+        "statute_id": "S04706",
+        "cosine": 0.38774675130844116,
+        "is_gold": false
+      },
+      {
+        "rank": 5,
+        "statute_id": "S04353",
+        "cosine": 0.385810524225235,
+        "is_gold": false
+      },
+      {
+        "rank": 6,
+        "statute_id": "S04356",
+        "cosine": 0.38137513399124146,
+        "is_gold": false
+      },
+      {
+        "rank": 7,
+        "statute_id": "S00665",
+        "cosine": 0.37789615988731384,
+        "is_gold": false
+      },
+      {
+        "rank": 8,
+        "statute_id": "S04347",
+        "cosine": 0.3711402714252472,
+        "is_gold": false
+      },
+      {
+        "rank": 9,
+        "statute_id": "S04355",
+        "cosine": 0.3666958808898926,
+        "is_gold": false
+      },
+      {
+        "rank": 10,
+        "statute_id": "S02922",
+        "cosine": 0.35087141394615173,
+        "is_gold": false
+      }
+    ],
+    "gold_ranks": {
+      "S02926": 1
+    },
+    "metrics": {
+      "recall_at_5": 1.0,
+      "hit_at_5": 1,
+      "ndcg_at_5": 1.0,
+      "rr_at_10": 1.0
+    },
+    "empty_retrieval": false,
+    "cosine_examples": [
+      {
+        "statute_id": "S02926",
+        "query_l2": 1.0,
+        "statute_l2": 1.0,
+        "normalized_dot_product": 0.504217803478241,
+        "largest_coordinate_products": [
+          {
+            "coordinate": 6704,
+            "query_value": 0.3559863865375519,
+            "statute_value": 0.2533987760543823,
+            "product": 0.09020651131868362
+          },
+          {
+            "coordinate": 6958,
+            "query_value": 0.3439702093601227,
+            "statute_value": 0.2448454201221466,
+            "product": 0.08421953022480011
+          },
+          {
+            "coordinate": 3032,
+            "query_value": 0.47808533906936646,
+            "statute_value": 0.17015573382377625,
+            "product": 0.0813489630818367
+          },
+          {
+            "coordinate": 4651,
+            "query_value": 0.2644951343536377,
+            "statute_value": 0.1882733255624771,
+            "product": 0.04979737848043442
+          }
+        ]
+      },
+      {
+        "statute_id": "S02922",
+        "query_l2": 1.0,
+        "statute_l2": 1.0,
+        "normalized_dot_product": 0.35087141394615173,
+        "largest_coordinate_products": [
+          {
+            "coordinate": 3032,
+            "query_value": 0.47808533906936646,
+            "statute_value": 0.43294215202331543,
+            "product": 0.2069832980632782
+          },
+          {
+            "coordinate": 2887,
+            "query_value": 0.16338342428207397,
+            "statute_value": 0.14795595407485962,
+            "product": 0.024173550307750702
+          },
+          {
+            "coordinate": 3784,
+            "query_value": 0.1563165783882141,
+            "statute_value": 0.14155638217926025,
+            "product": 0.022127609699964523
+          },
+          {
+            "coordinate": 2599,
+            "query_value": 0.15615214407444,
+            "statute_value": 0.14140747487545013,
+            "product": 0.022081080824136734
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "question_id": "test-00016",
+    "question": "ถ้ามีมติของที่ประชุมใหญ่ให้อำนาจผู้ชำระบัญชีให้ชำระบัญชีแยกกันได้ต้องนำความไปจดทะเบียนภายในกี่วัน",
+    "method": "R3 Word2Vec",
+    "method_key": "r3",
+    "gold_ids": [
+      "S02926"
+    ],
+    "retrieved_ids": [
+      "S02926",
+      "S02934",
+      "S02922",
+      "S02932",
+      "S02918",
+      "S02939",
+      "S02854",
+      "S04355",
+      "S04354",
+      "S04914"
+    ],
+    "ranked": [
+      {
+        "rank": 1,
+        "statute_id": "S02926",
+        "cosine": 0.9494479298591614,
+        "is_gold": true
+      },
+      {
+        "rank": 2,
+        "statute_id": "S02934",
+        "cosine": 0.9387994408607483,
+        "is_gold": false
+      },
+      {
+        "rank": 3,
+        "statute_id": "S02922",
+        "cosine": 0.922968327999115,
+        "is_gold": false
+      },
+      {
+        "rank": 4,
+        "statute_id": "S02932",
+        "cosine": 0.9206050038337708,
+        "is_gold": false
+      },
+      {
+        "rank": 5,
+        "statute_id": "S02918",
+        "cosine": 0.9163233637809753,
+        "is_gold": false
+      },
+      {
+        "rank": 6,
+        "statute_id": "S02939",
+        "cosine": 0.9082749485969543,
+        "is_gold": false
+      },
+      {
+        "rank": 7,
+        "statute_id": "S02854",
+        "cosine": 0.9064765572547913,
+        "is_gold": false
+      },
+      {
+        "rank": 8,
+        "statute_id": "S04355",
+        "cosine": 0.9049275517463684,
+        "is_gold": false
+      },
+      {
+        "rank": 9,
+        "statute_id": "S04354",
+        "cosine": 0.9030500650405884,
+        "is_gold": false
+      },
+      {
+        "rank": 10,
+        "statute_id": "S04914",
+        "cosine": 0.9018946290016174,
+        "is_gold": false
+      }
+    ],
+    "gold_ranks": {
+      "S02926": 1
+    },
+    "metrics": {
+      "recall_at_5": 1.0,
+      "hit_at_5": 1,
+      "ndcg_at_5": 1.0,
+      "rr_at_10": 1.0
+    },
+    "empty_retrieval": false,
+    "cosine_examples": [
+      {
+        "statute_id": "S02926",
+        "query_l2": 1.0,
+        "statute_l2": 1.0,
+        "normalized_dot_product": 0.9494479298591614,
+        "largest_coordinate_products": [
+          {
+            "coordinate": 57,
+            "query_value": 0.2808411419391632,
+            "statute_value": 0.22713176906108856,
+            "product": 0.06378794461488724
+          },
+          {
+            "coordinate": 37,
+            "query_value": -0.22147268056869507,
+            "statute_value": -0.24180658161640167,
+            "product": 0.05355355143547058
+          },
+          {
+            "coordinate": 1,
+            "query_value": -0.23102295398712158,
+            "statute_value": -0.22592021524906158,
+            "product": 0.05219275504350662
+          },
+          {
+            "coordinate": 54,
+            "query_value": 0.2073533535003662,
+            "statute_value": 0.21148860454559326,
+            "product": 0.043852873146533966
+          }
+        ]
+      },
+      {
+        "statute_id": "S02922",
+        "query_l2": 1.0,
+        "statute_l2": 0.9999999403953552,
+        "normalized_dot_product": 0.922968327999115,
+        "largest_coordinate_products": [
+          {
+            "coordinate": 57,
+            "query_value": 0.2808411419391632,
+            "statute_value": 0.21297404170036316,
+            "product": 0.059811871498823166
+          },
+          {
+            "coordinate": 37,
+            "query_value": -0.22147268056869507,
+            "statute_value": -0.2449166178703308,
+            "product": 0.0542423389852047
+          },
+          {
+            "coordinate": 54,
+            "query_value": 0.2073533535003662,
+            "statute_value": 0.23759518563747406,
+            "product": 0.049266159534454346
+          },
+          {
+            "coordinate": 1,
+            "query_value": -0.23102295398712158,
+            "statute_value": -0.20148052275180817,
+            "product": 0.04654662683606148
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "question_id": "test-00016",
+    "question": "ถ้ามีมติของที่ประชุมใหญ่ให้อำนาจผู้ชำระบัญชีให้ชำระบัญชีแยกกันได้ต้องนำความไปจดทะเบียนภายในกี่วัน",
+    "method": "R4 BGE-M3",
+    "method_key": "r4",
+    "gold_ids": [
+      "S02926"
+    ],
+    "retrieved_ids": [
+      "S02926",
+      "S02934",
+      "S04355",
+      "S02922",
+      "S02896",
+      "S04354",
+      "S02932",
+      "S04914",
+      "S02918",
+      "S04356"
+    ],
+    "ranked": [
+      {
+        "rank": 1,
+        "statute_id": "S02926",
+        "cosine": 0.8475660681724548,
+        "is_gold": true
+      },
+      {
+        "rank": 2,
+        "statute_id": "S02934",
+        "cosine": 0.7492039203643799,
+        "is_gold": false
+      },
+      {
+        "rank": 3,
+        "statute_id": "S04355",
+        "cosine": 0.7157795429229736,
+        "is_gold": false
+      },
+      {
+        "rank": 4,
+        "statute_id": "S02922",
+        "cosine": 0.6949226260185242,
+        "is_gold": false
+      },
+      {
+        "rank": 5,
+        "statute_id": "S02896",
+        "cosine": 0.6827192306518555,
+        "is_gold": false
+      },
+      {
+        "rank": 6,
+        "statute_id": "S04354",
+        "cosine": 0.6784219145774841,
+        "is_gold": false
+      },
+      {
+        "rank": 7,
+        "statute_id": "S02932",
+        "cosine": 0.6780909895896912,
+        "is_gold": false
+      },
+      {
+        "rank": 8,
+        "statute_id": "S04914",
+        "cosine": 0.6767168045043945,
+        "is_gold": false
+      },
+      {
+        "rank": 9,
+        "statute_id": "S02918",
+        "cosine": 0.6732065081596375,
+        "is_gold": false
+      },
+      {
+        "rank": 10,
+        "statute_id": "S04356",
+        "cosine": 0.6696222424507141,
+        "is_gold": false
+      }
+    ],
+    "gold_ranks": {
+      "S02926": 1
+    },
+    "metrics": {
+      "recall_at_5": 1.0,
+      "hit_at_5": 1,
+      "ndcg_at_5": 1.0,
+      "rr_at_10": 1.0
+    },
+    "empty_retrieval": false,
+    "cosine_examples": [
+      {
+        "statute_id": "S02926",
+        "query_l2": 0.9999999403953552,
+        "statute_l2": 1.0000001192092896,
+        "normalized_dot_product": 0.8475660681724548,
+        "largest_coordinate_products": [
+          {
+            "coordinate": 386,
+            "query_value": 0.21438252925872803,
+            "statute_value": 0.22165673971176147,
+            "product": 0.04751933366060257
+          },
+          {
+            "coordinate": 780,
+            "query_value": -0.19348976016044617,
+            "statute_value": -0.1585703343153,
+            "product": 0.030681736767292023
+          },
+          {
+            "coordinate": 297,
+            "query_value": -0.15357643365859985,
+            "statute_value": -0.15552133321762085,
+            "product": 0.02388441190123558
+          },
+          {
+            "coordinate": 577,
+            "query_value": 0.12212809175252914,
+            "statute_value": 0.12105768918991089,
+            "product": 0.014784544706344604
+          }
+        ]
+      },
+      {
+        "statute_id": "S02922",
+        "query_l2": 0.9999999403953552,
+        "statute_l2": 1.0,
+        "normalized_dot_product": 0.6949225664138794,
+        "largest_coordinate_products": [
+          {
+            "coordinate": 386,
+            "query_value": 0.21438252925872803,
+            "statute_value": 0.20326080918312073,
+            "product": 0.04357556626200676
+          },
+          {
+            "coordinate": 780,
+            "query_value": -0.19348976016044617,
+            "statute_value": -0.14121665060520172,
+            "product": 0.027323976159095764
+          },
+          {
+            "coordinate": 297,
+            "query_value": -0.15357643365859985,
+            "statute_value": -0.1379348635673523,
+            "product": 0.021183544769883156
+          },
+          {
+            "coordinate": 376,
+            "query_value": -0.11216618120670319,
+            "statute_value": -0.10267248749732971,
+            "product": 0.011516381055116653
+          }
+        ]
+      }
+    ]
+  }
+]

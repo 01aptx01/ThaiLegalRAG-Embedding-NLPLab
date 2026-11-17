@@ -24,7 +24,7 @@ def _quoted(value: Any) -> str:
     for line in text.split("\n"):
         line = html.escape(line, quote=True)
         line = re.sub(r"([\\`*_{}\[\]()#+\-.!|:])", r"\\\1", line)
-        lines.append("> " + line)
+        lines.append(("> " + line).rstrip())
     return "\n".join(lines)
 
 
@@ -135,19 +135,21 @@ def _dataset_embedding_example(
             f"แหล่งข้อมูล `{_cell(question.get('dataset_id'))}` · split `{_cell(question.get('split'))}` · row {question.get('source_row_number', '—')} · revision `{_cell(question.get('dataset_revision'))}`",
             "",
             "**ข้อความคำถามดิบ**", "", _quoted(source.get("question")), "",
-            f"**หลัง normalize** {_quoted(question.get('normalized_question'))}", "",
+            "**หลัง normalize**", "", _quoted(question.get("normalized_question")), "",
             "**รายการมาตราจากแถวข้อมูลที่จับคู่ได้**", "",
             "| ข้อมูลต้นทาง | รหัสใน corpus | วิธีจับคู่ |",
             "| --- | --- | --- |",
         ])
-        contexts = source.get("positive_contexts", source.get("relevant_laws", [])) or []
         matched = question.get("matched_statutes", [])
-        for position, statute in enumerate(matched):
-            raw_context = contexts[position] if position < len(contexts) else {}
-            law = raw_context.get("metadata", {}).get("law_title") or raw_context.get("law_name") or statute.get("law_name")
-            section = raw_context.get("metadata", {}).get("section") or raw_context.get("section_num") or statute.get("section_num")
+        for statute in matched:
+            source_mapping = statute.get("source_mapping") or {}
+            source_label = "—"
+            if source_mapping:
+                law = source_mapping.get("law_name")
+                section = source_mapping.get("section")
+                source_label = f"{law or ''} มาตรา {section or ''}".strip()
             lines.append("| " + " | ".join([
-                _cell(f"{law} มาตรา {section}"),
+                _cell(source_label),
                 _cell(f"{statute.get('statute_id')} · {statute.get('law_name')} มาตรา {statute.get('section_num')}"),
                 _cell(statute.get("matched_by")),
             ]) + " |")
@@ -161,7 +163,7 @@ def _dataset_embedding_example(
         return lines
 
     lines.extend(["**ตัวอย่าง token และพิกัดเวกเตอร์**", "",
-                  "แสดงสองพิกัดแรกจากตัวอย่างที่ export แต่ละ embedding มีมิติและค่าครบใน [embeddings.json](embeddings.json)", "",
+                  "แสดงสองพิกัดแรกจากตัวอย่างที่ export รายละเอียด trace และพิกัดตัวอย่างอยู่ใน [embeddings.json](embeddings.json)", "",
                   "| วิธี | Token ที่ใช้ | ตัวอย่างพิกัด 1 | ตัวอย่างพิกัด 2 |",
                   "| --- | --- | --- | --- |"])
     for row in by_method:
@@ -193,7 +195,8 @@ def _dataset_embedding_example(
 
 
 def _method_answer_section(
-    corpus: Mapping[str, Mapping[str, Any]], answer: Mapping[str, Any]
+    corpus: Mapping[str, Mapping[str, Any]], answer: Mapping[str, Any],
+    prompt_statutes: Mapping[str, Mapping[str, Any]] | None = None,
 ) -> list[str]:
     method = _text(answer.get("method"))
     prompt_ids = _ids(answer.get("prompt_ids"))
@@ -212,16 +215,19 @@ def _method_answer_section(
              f"- Abstain: {bool(answer.get('abstained'))} · input/output tokens: "
              f"{answer.get('input_tokens', '—')} / {answer.get('output_tokens', '—')} · "
              f"เวลา generate: {_metric(answer.get('generation_seconds'), 2)} วินาที",
+             f"- ชน output token limit: {bool(answer.get('output_token_limit_reached'))}",
              "", "**คำตอบที่โมเดลสร้าง**", "", _quoted(answer.get("answer")), "",
              "**ตัวบทที่ส่งให้โมเดล**", ""]
     if not prompt_ids:
         lines.append("ไม่มีตัวบทถูกส่งเข้า prompt")
     for sid in prompt_ids:
-        statute = corpus.get(sid)
+        statute = (prompt_statutes or {}).get(sid) or corpus.get(sid)
         if statute is None:
             lines.extend([f"- **{_cell(sid)}** · ไม่พบรหัสนี้ในคลังที่ export", ""])
             continue
         label = _statute_label(corpus, sid)
+        if sid not in corpus:
+            label = f"{sid} · {_text(statute.get('law_name'))} มาตรา {_text(statute.get('section_num'))}".strip()
         text = _text(statute.get("section_content"))
         excerpt = text[:1000]
         if len(text) > len(excerpt):
@@ -279,9 +285,10 @@ def render_cases(
         f"- source commit: {_cell(manifest.get('source_commit', '—'))}",
         f"- วิธีค้นที่ประกาศใน manifest: {', '.join(_cell(method) for method in methods) or 'ไม่มี'}",
         f"- สถานะการสร้างคำตอบ: {_cell(manifest.get('generation_status', 'skipped'))}",
+        *([f"- Generator: {_cell(manifest.get('generator'))} · revision {_cell(manifest.get('generator_revision'))} · dtype {_cell(manifest.get('generator_dtype'))} · input budget {manifest.get('max_input_tokens', '—')} tokens · output budget {manifest.get('max_new_tokens', '—')} tokens"] if manifest.get("generation_status") == "completed" else []),
         "- ไฟล์ข้อมูลดิบ: [dataset.json](dataset.json) · [embeddings.json](embeddings.json) · [rankings.json](rankings.json) · [manifest.json](manifest.json)",
-        *(["- ผลคำตอบ: [answers.json](answers.json)"] if manifest.get("generation_status") == "completed" else []), "",
-        "คำเตือน: gold คือป้ายกำกับจากชุดข้อมูล อาจไม่ครอบคลุมทุกมาตราที่ตอบได้ ส่วนกรณีใช้ candidate subset ระบบคัดมาตรา gold และผลค้นอันดับต้นจากวิธี sparse ไว้ก่อน แล้วจึงจัดอันดับภายใน candidate ที่เลือก คะแนนจึงอธิบายผลเฉพาะขอบเขตนี้ ไม่ใช่ benchmark ของคลังเต็ม", "",
+        *(["- ผลคำตอบ: [answers.json](answers.json) · [review_template.csv](generation/review_template.csv)"] if manifest.get("generation_status") == "completed" else []), "",
+        "Gold คือมาตราที่ชุดข้อมูลกำกับไว้ ในรอบที่ใช้คลังย่อย ระบบคัดมาตรา gold และผลค้นอันดับต้นจาก R1–R3 ไว้ก่อน แล้วคำนวณคะแนนทั้งหมดภายในชุดที่เลือก", "",
     ]
 
     if not question_rows:
@@ -329,10 +336,14 @@ def render_cases(
                 if answer is None:
                     lines.extend([f"#### {_cell(method)}", "", "ไม่มีผลคำตอบสำหรับวิธีนี้ในไฟล์ผล", ""])
                 else:
-                    lines.extend(_method_answer_section(corpus, answer))
+                    lines.extend(_method_answer_section(
+                        corpus, answer, (dataset or {}).get("prompt_statutes")
+                    ))
             for answer in query_answers:
                 if str(answer.get("method")) not in methods:
-                    lines.extend(_method_answer_section(corpus, answer))
+                    lines.extend(_method_answer_section(
+                        corpus, answer, (dataset or {}).get("prompt_statutes")
+                    ))
         lines.extend(["---", ""])
 
     if not question_rows:

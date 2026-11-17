@@ -1,0 +1,17 @@
+{
+  "scope": "filtered_view_of_production_audit",
+  "question_ids": [
+    "pilot-04144",
+    "test-00016",
+    "pilot-00169"
+  ],
+  "selected_question_ids": [
+    "pilot-04144",
+    "test-00016"
+  ],
+  "excluded_question_id": "pilot-00169",
+  "gold_ids": [
+    "S00755",
+    "S02926"
+  ]
+}

@@ -1,0 +1,4 @@
+﻿split,question_id,reason,gold_entries,mapped_unique
+pilot,pilot-00169,test_overlap,1,1
+pilot,pilot-04144,included,1,1
+test,test-00016,included,1,1

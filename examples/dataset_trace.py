@@ -164,8 +164,13 @@ def load_example_data(
         statute_examples = []
         for statute_id in prepared_row["gold_ids"]:
             match = mapping_rows.loc[mapping_rows["statute_id"].eq(statute_id)]
-            match_method = match.iloc[0]["status"] if not match.empty else "unknown"
-            statute_examples.append(_statute_example(statute_id, corpus[statute_id], match_method))
+            if match.empty:
+                raise ValueError(f"missing audit evidence for {question_id} / {statute_id}")
+            source_mapping = match.iloc[0]
+            statute_examples.append({
+                **_statute_example(statute_id, corpus[statute_id], source_mapping["status"]),
+                "source_mapping": {field: source_mapping[field] for field in ("law_name", "section")},
+            })
 
         question_examples.append({
             "question_id": question_id,
