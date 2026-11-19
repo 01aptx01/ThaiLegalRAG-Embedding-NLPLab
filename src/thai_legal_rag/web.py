@@ -18,8 +18,45 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field, field_validator
 
 from .config import RunConfig
+from .generation import ABSTAIN_TEXT
+from .inference_generation import canonicalize_answer, citation_audit
 
 logger = logging.getLogger(__name__)
+
+
+def _structured_result(question: str, event: dict, corpus) -> dict:
+    """Shape every generated result into the stable, citation-safe API contract."""
+    prompt_ids = event.get("prompt_ids")
+    if not isinstance(prompt_ids, list):
+        prompt_ids = []
+    raw_answer = event.get("raw_answer")
+    if "raw_answer" not in event:
+        # Keep compatibility with small custom generators that still expose
+        # their model text in the older ``answer`` field.
+        raw_answer = event.get("answer")
+
+    answer, legal_citations = canonicalize_answer(raw_answer, question, prompt_ids, corpus)
+    cited_ids, invalid_ids = citation_audit(raw_answer, prompt_ids, corpus)
+    if raw_answer is None and not prompt_ids:
+        answer = ABSTAIN_TEXT
+
+    return {
+        **event,
+        "type": "result",
+        "question": question,
+        "answer": answer,
+        "raw_answer": raw_answer,
+        "insufficient_data": answer == ABSTAIN_TEXT,
+        "legal_citations": legal_citations,
+        "prompt_ids": prompt_ids,
+        "omitted_ids": event.get("omitted_ids", []),
+        "cited_ids": cited_ids,
+        "invalid_ids": invalid_ids,
+        "input_tokens": event.get("input_tokens"),
+        "output_tokens": event.get("output_tokens"),
+        "generation_ms": event.get("generation_ms"),
+        "ttft_ms": event.get("ttft_ms"),
+    }
 
 
 class InferenceRequest(BaseModel):
@@ -63,14 +100,19 @@ def _event_stream(index, generator, query, cancelled):
             }
             if not query.generate:
                 yield {
-                    "type": "result", "method": method, "answer": None,
+                    "type": "result", "method": method, "question": query.question,
+                    "answer": None, "raw_answer": None, "insufficient_data": None,
+                    "legal_citations": [],
                     "prompt_ids": [], "omitted_ids": [], "cited_ids": [], "invalid_ids": [],
                     "input_tokens": None, "output_tokens": None, "generation_ms": None, "ttft_ms": None,
                 }
                 continue
             with closing(generator.events(query.question, ranked[:RunConfig.top_k], index.corpus, cancelled)) as events:
                 for event in events:
-                    yield {**event, "method": method}
+                    if event.get("type") == "result":
+                        yield _structured_result(query.question, event, index.corpus) | {"method": method}
+                    else:
+                        yield {**event, "method": method}
         except Exception:
             if cancelled.is_set():
                 return

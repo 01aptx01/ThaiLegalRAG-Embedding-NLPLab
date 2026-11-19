@@ -25,11 +25,16 @@ SYSTEM_PROMPT = (
 _CITATION_RE = re.compile(r"\[(S\d{5})\]", flags=re.ASCII)
 
 
-def _prompt_ids(question: str, blocks: Sequence[str], tokenizer: Any) -> Any:
+def _prompt_ids(
+    question: str,
+    blocks: Sequence[str],
+    tokenizer: Any,
+    system_prompt: str = SYSTEM_PROMPT,
+) -> Any:
     evidence = "\n\n".join(blocks) or "(ไม่มีตัวบท)"
     input_ids = tokenizer.apply_chat_template(
         [
-            {"role": "system", "content": SYSTEM_PROMPT},
+            {"role": "system", "content": system_prompt},
             {"role": "user", "content": f"คำถาม\n{question}\n\nตัวบท\n{evidence}"},
         ],
         tokenize=True,
@@ -52,6 +57,7 @@ def _make_prompt(
     tokenizer: Any,
     max_input_tokens: int,
     device: Any,
+    system_prompt: str = SYSTEM_PROMPT,
 ) -> tuple[Any, list[str], list[str]]:
     """Build a bounded prompt, omitting whole statutes that do not fit.
 
@@ -61,12 +67,12 @@ def _make_prompt(
     blocks: list[str] = []
     included: list[str] = []
     omitted: list[str] = []
-    input_ids = _prompt_ids(question, blocks, tokenizer)
+    input_ids = _prompt_ids(question, blocks, tokenizer, system_prompt)
     if input_ids.shape[-1] > max_input_tokens:
         raise ValueError("คำถามและคำสั่งยาวเกินงบ prompt")
     for sid in retrieved_ids:
         block = f"[{sid}] {corpus[sid]['section_content']}"
-        candidate = _prompt_ids(question, [*blocks, block], tokenizer)
+        candidate = _prompt_ids(question, [*blocks, block], tokenizer, system_prompt)
         if candidate.shape[-1] <= max_input_tokens:
             blocks.append(block)
             included.append(sid)

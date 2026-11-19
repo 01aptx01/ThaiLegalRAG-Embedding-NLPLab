@@ -6,7 +6,13 @@ import types
 import unittest
 
 from thai_legal_rag import generation
-from thai_legal_rag.inference_generation import LiveGenerator
+from thai_legal_rag.inference_generation import (
+    LIVE_SYSTEM_PROMPT,
+    LiveGenerator,
+    canonicalize_answer,
+    citation_audit,
+    extract_answer_body,
+)
 
 
 class FakeTensor:
@@ -28,7 +34,11 @@ class FakeTensor:
 class FakeTokenizer:
     eos_token_id = 0
 
+    def __init__(self):
+        self.prompts = []
+
     def apply_chat_template(self, messages, **kwargs):
+        self.prompts.append(messages)
         text = " ".join(message["content"] for message in messages)
         return FakeTensor(len(text.split()))
 
@@ -109,7 +119,7 @@ class InferenceGenerationTests(unittest.TestCase):
 
         self.assertEqual([event["type"] for event in events], ["delta", "delta", "result"])
         result = events[-1]
-        self.assertEqual(result["answer"], "ตอบตาม [S00001] และ [S99999]")
+        self.assertEqual(result["raw_answer"], "ตอบตาม [S00001] และ [S99999]")
         self.assertEqual(result["prompt_ids"], ["S00001"])
         self.assertEqual(result["cited_ids"], ["S00001", "S99999"])
         self.assertEqual(result["invalid_ids"], ["S99999"])
@@ -126,7 +136,7 @@ class InferenceGenerationTests(unittest.TestCase):
         events = list(live.events("คำถาม", [], {}, threading.Event()))
         self.assertEqual(events, [{
             "type": "result",
-            "answer": generation.ABSTAIN_TEXT,
+            "raw_answer": None,
             "prompt_ids": [],
             "omitted_ids": [],
             "cited_ids": [],
@@ -136,6 +146,95 @@ class InferenceGenerationTests(unittest.TestCase):
             "generation_ms": 0.0,
             "ttft_ms": 0.0,
         }])
+
+    def test_live_prompt_is_tighter_without_changing_benchmark_prompt(self):
+        tokenizer = FakeTokenizer()
+        generation._prompt_ids("คำถาม", [], tokenizer)
+        self.assertEqual(tokenizer.prompts[-1][0]["content"], generation.SYSTEM_PROMPT)
+
+        class Model:
+            def generate(self, input_ids, **kwargs):
+                kwargs["streamer"].end()
+                return FakeTensor(input_ids.shape[-1])
+
+        list(LiveGenerator(Model(), tokenizer).events(
+            "คำถาม", ["S00001"], {"S00001": {"section_content": "ตัวบท"}},
+            threading.Event(),
+        ))
+        self.assertEqual(tokenizer.prompts[-1][0]["content"], LIVE_SYSTEM_PROMPT)
+        self.assertIn("ห้ามเดาหรือสร้างรหัส", LIVE_SYSTEM_PROMPT)
+
+    def test_scaffold_echo_and_refusal_are_canonical_abstentions(self):
+        corpus = {
+            "S00001": {
+                "law_name": "กฎหมาย",
+                "section_num": "1",
+                "section_content": "ตัวบทฉบับเต็ม",
+            },
+        }
+        question = "ผู้ใดทำสัญญาได้?"
+        echoed_prompt = f"คำถาม\n{question}\nตัวบท\n[S00001] ตัวบทฉบับเต็ม"
+        self.assertEqual(extract_answer_body(echoed_prompt, question), "")
+        self.assertEqual(
+            canonicalize_answer(echoed_prompt, question, ["S00001"], corpus),
+            (generation.ABSTAIN_TEXT, []),
+        )
+
+        refusal = (
+            f"คำตอบ\n{question}\nหลักฐานไม่เพียงพอ\n"
+            "เหตุผล: ข้อความที่ไม่รองรับ [S00001]"
+        )
+        self.assertEqual(
+            canonicalize_answer(refusal, question, ["S00001"], corpus),
+            (generation.ABSTAIN_TEXT, []),
+        )
+        self.assertEqual(citation_audit(refusal, ["S00001"], corpus), (["S00001"], []))
+
+    def test_salvages_answer_prose_before_evidence_scaffolding(self):
+        corpus = {
+            "S00001": {
+                "law_name": "กฎหมาย",
+                "section_num": "1",
+                "section_content": "ตัวบทฉบับเต็ม",
+            },
+        }
+        body = "ผู้เยาว์ต้องได้รับความยินยอม [S00001]\nข้อยกเว้นนี้ใช้กับกรณีดังกล่าวด้วย [S00001]"
+        raw = f"คำตอบ\n{body}\nตัวบทอ้างอิง\n[S00001] ตัวบทฉบับเต็ม"
+        self.assertEqual(extract_answer_body(raw, "ผู้เยาว์ทำอะไรได้?"), body)
+        self.assertEqual(
+            canonicalize_answer(raw, "ผู้เยาว์ทำอะไรได้?", ["S00001"], corpus),
+            (body, [{
+                "id": "S00001", "law_name": "กฎหมาย", "section_num": "1",
+                "text": "ตัวบทฉบับเต็ม",
+            }]),
+        )
+
+        plain = f"ผู้เยาว์ต้องได้รับความยินยอม [S00001]\nตัวบทอ้างอิง\n[S00001] ตัวบทฉบับเต็ม"
+        self.assertEqual(extract_answer_body(plain, "ผู้เยาว์ทำอะไรได้?"), "ผู้เยาว์ต้องได้รับความยินยอม [S00001]")
+
+    def test_missing_invalid_or_copied_statute_citations_abstain(self):
+        corpus = {
+            "S00001": {
+                "law_name": "กฎหมาย",
+                "section_num": "1",
+                "section_content": "ตัวบทฉบับเต็ม",
+            },
+        }
+        question = "ถามอะไร?"
+        for raw, prompt_ids in (
+            ("คำตอบที่ไม่มี citation", ["S00001"]),
+            ("คำตอบ [S99999]", ["S00001"]),
+            ("[S00001]", ["S00001"]),
+            ("[S00001] [S00002]", ["S00001", "S00002"]),
+            ("[S00001] ตัวบทฉบับเต็ม", ["S00001"]),
+            ("ไม่ทราบคำตอบ [S00001]", ["S00001"]),
+            ("ข้อมูลไม่เพียงพอ [S00001]", ["S00001"]),
+        ):
+            with self.subTest(raw=raw):
+                self.assertEqual(
+                    canonicalize_answer(raw, question, prompt_ids, corpus),
+                    (generation.ABSTAIN_TEXT, []),
+                )
 
     def test_pre_cancelled_request_returns_without_events_or_model_call(self):
         class Model:
@@ -174,8 +273,8 @@ class InferenceGenerationTests(unittest.TestCase):
         ))
         deltas = [event["text"] for event in events if event["type"] == "delta"]
         result = events[-1]
-        self.assertEqual("".join(deltas), result["answer"])
-        self.assertEqual(result["answer"], "กฎหมาย [S00001]")
+        self.assertEqual("".join(deltas), result["raw_answer"])
+        self.assertEqual(result["raw_answer"], "กฎหมาย [S00001]")
         self.assertGreater(len(deltas), 1)
 
     def test_worker_errors_propagate_to_consumer(self):

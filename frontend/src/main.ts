@@ -1,4 +1,5 @@
 import "./style.css";
+import { setEvaluationRows } from "./evaluate";
 type Method = { id: string; label: string };
 type Evidence = {
   id: string;
@@ -8,9 +9,14 @@ type Evidence = {
 };
 type Run = {
   method: string;
+  question: string;
+  generate: boolean;
   evidence: Evidence[];
   retrieved_ids: string[];
   answer: string;
+  raw_answer: string;
+  insufficient_data: boolean;
+  legal_citations?: Evidence[];
   prompt_ids: string[];
   omitted_ids: string[];
   cited_ids: string[];
@@ -67,7 +73,7 @@ function head(k: string, t: string, d: string) {
   return `<header class="pagehead"><div class="eyebrow">${k}</div><h1>${t}</h1><p>${d}</p></header>`;
 }
 function form(compare = false) {
-  return `<section class="card formcard"><div class="card-title"><div><h2>${compare ? "คำถามที่ต้องการเปรียบเทียบ" : "คำถามของคุณ"}</h2></div></div><label for="question">คำถามภาษาไทย</label><textarea id="question" rows="4" maxlength="1500" placeholder="เช่น ผู้เยาว์ทำสัญญาโดยไม่ได้รับความยินยอมจากผู้แทนโดยชอบธรรม มีผลอย่างไร?" aria-describedby="privacy count"></textarea><div class="inputmeta"><span id="privacy">โปรดหลีกเลี่ยงข้อมูลส่วนบุคคลที่ไม่จำเป็น</span><span id="count">0 / 1,500</span></div>${compare ? `<label class="label-gap">เลือก Retriever</label><div class="method-grid">${[1, 2, 3, 4].map((n) => `<label class="method-option"><input type="checkbox" name="methods" value="r${n}" ${status.methods.length && !status.methods.some((m) => m.id === `r${n}`) ? "disabled" : "checked"}><span>R${n}<small>${["Binary BoW", "TF-IDF", "Word2Vec", "BGE-M3"][n - 1]}</small></span></label>`).join("")}</div><label class="toggle"><input id="compare-generate" type="checkbox" ${status.generator ? "" : "disabled"}><span>สร้างคำตอบด้วย Generator</span><small>${status.generator ? "ปิดไว้เพื่อเปรียบเทียบความเร็วค้นคืน" : "ไม่มี Generator ใน backend นี้"}</small></label>` : `<label class="label-gap" for="retriever">Retriever</label><select id="retriever">${(status.methods.length ? status.methods : [1, 2, 3, 4].map((n) => ({ id: `r${n}`, label: `R${n} · ${["Binary Bag-of-Words", "TF-IDF", "Word2Vec", "BGE-M3"][n - 1]}` }))).map((m) => `<option value="${esc(m.id)}" ${m.id === selected ? "selected" : ""}>${esc(m.label)}</option>`).join("")}</select>`}<div class="actions"><button class="btn-primary" id="run" ${status.ready ? "" : "disabled"}>${compare ? "เริ่มเปรียบเทียบ" : status.generator ? "ค้นหลักฐานและสร้างคำตอบ" : "ค้นหลักฐาน"} <span>→</span></button><button class="btn-quiet" id="clear">ล้าง</button>${controller ? '<button class="btn-danger" id="cancel">ยกเลิก</button>' : ""}</div><div id="notice" role="status" aria-live="polite"></div></section>`;
+  return `<section class="card formcard"><div class="card-title"><div><h2>${compare ? "คำถามที่ต้องการเปรียบเทียบ" : "คำถามของคุณ"}</h2></div></div><label for="question">คำถามภาษาไทย</label><textarea id="question" rows="4" maxlength="1500" placeholder="เช่น ผู้เยาว์ทำสัญญาโดยไม่ได้รับความยินยอมจากผู้แทนโดยชอบธรรม มีผลอย่างไร?" aria-describedby="privacy count"></textarea><div class="inputmeta"><span id="privacy">โปรดหลีกเลี่ยงข้อมูลส่วนบุคคลที่ไม่จำเป็น</span><span id="count">0 / 1,500</span></div>${compare ? `<label class="label-gap">เลือก Retriever</label><div class="method-grid">${[1, 2, 3, 4].map((n) => `<label class="method-option"><input type="checkbox" name="methods" value="r${n}" ${status.methods.length && !status.methods.some((m) => m.id === `r${n}`) ? "disabled" : "checked"}><span>R${n}<small>${["Binary BoW", "TF-IDF", "Word2Vec", "BGE-M3"][n - 1]}</small></span></label>`).join("")}</div><label class="toggle"><input id="compare-generate" type="checkbox" ${status.generator ? "checked" : "disabled"}><span>สร้างคำตอบด้วย Generator</span><small>${status.generator ? "ปิดได้เมื่อต้องการเทียบเฉพาะการค้นคืน" : "ไม่มี Generator ใน backend นี้"}</small></label>` : `<label class="label-gap" for="retriever">Retriever</label><select id="retriever">${(status.methods.length ? status.methods : [1, 2, 3, 4].map((n) => ({ id: `r${n}`, label: `R${n} · ${["Binary Bag-of-Words", "TF-IDF", "Word2Vec", "BGE-M3"][n - 1]}` }))).map((m) => `<option value="${esc(m.id)}" ${m.id === selected ? "selected" : ""}>${esc(m.label)}</option>`).join("")}</select>`}<div class="actions"><button class="btn-primary" id="run" ${status.ready ? "" : "disabled"}>${compare ? "เริ่มเปรียบเทียบ" : status.generator ? "ค้นหลักฐานและสร้างคำตอบ" : "ค้นหลักฐาน"} <span>→</span></button><button class="btn-quiet" id="clear">ล้าง</button>${controller ? '<button class="btn-danger" id="cancel">ยกเลิก</button>' : ""}</div><div id="notice" role="status" aria-live="polite"></div></section>`;
 }
 function playground() {
   return `${head("WORKSPACE / PLAYGROUND", "ถามคำถามกฎหมาย", "พิมพ์คำถาม เลือก Retriever แล้วตรวจคำตอบพร้อมหลักฐานที่ค้นได้")}<div class="layout"><div>${form()}<div id="results">${runCard(current[0])}</div></div><aside class="sidecolumn"><div class="card info-card"><div class="minihead">SYSTEM STATUS</div><div class="systemrow"><span>Generator</span><b>${esc(status.generator || "ไม่พร้อมใช้งาน")}</b></div><div class="systemrow"><span>Corpus</span><b>${status.corpus_size ? status.corpus_size.toLocaleString() + " รายการ" : "—"}</b></div><div class="systemrow"><span>Revision</span><b>${esc(status.corpus_revision || "—")}</b></div></div><div class="notice-card"><b>ขอบเขตการใช้งาน</b><p>ผลลัพธ์เป็นข้อมูลจากการทดลอง ควรตรวจสอบตัวบทฉบับปัจจุบันและแหล่งทางการก่อนนำไปใช้</p></div></aside></div>`;
@@ -102,22 +108,47 @@ function evaluate() {
 function historyPage() {
   return `${head("WORKSPACE / HISTORY", "ประวัติการใช้งาน", "รายการ inference และ comparison ที่เก็บไว้ใน session นี้เท่านั้น")}<section class="card history-card"><div class="section-head"><div><h2>รายการล่าสุด</h2><p class="muted">ประวัติจะหายเมื่อปิดหรือรีเฟรชหน้านี้</p></div><button class="btn-quiet" id="clear-history" ${history.length ? "" : "disabled"}>ล้างประวัติ</button></div>${history.length ? `<div class="history-list">${history.map((e) => `<article class="history-item"><div class="history-mark">${e.kind === "Compare" ? "▦" : "◈"}</div><div class="history-body"><b>${esc(e.question)}</b><small>${e.kind} · ${new Date(e.at).toLocaleString("th-TH")} · ${e.results.length} วิธี</small></div><span class="history-ok">เสร็จสิ้น</span></article>`).join("")}</div>` : `<div class="empty-state"><span class="empty-icon">◷</span><b>ยังไม่มีประวัติ</b><p>ผลการทำงานจะปรากฏในหน้านี้ระหว่าง session ปัจจุบัน</p><a class="textlink" href="#playground">เริ่มค้นคำถาม →</a></div>`}</section>`;
 }
-function answerHtml(run: Run): string {
-  const validCitations = new Set(
-    run.cited_ids.filter((id) => run.prompt_ids.includes(id)),
-  );
-  return esc(run.answer)
-    .replace(/\[(S\d{5})\]/g, (citation, id: string) =>
-      validCitations.has(id)
-        ? `<button class="cite-link" type="button" data-target="${id}">${citation}</button>`
-        : citation,
-    )
-    .replace(/\n/g, "<br>");
+function isEvidence(value: unknown): value is Evidence {
+  if (value === null || typeof value !== "object") return false;
+  const row = value as Partial<Evidence>;
+  return typeof row.id === "string" && typeof row.law_name === "string"
+    && typeof row.section_num === "string" && typeof row.text === "string";
+}
+function inferenceOutput(run: Run): string {
+  const answerIds = new Set(Array.from(run.answer.matchAll(/\[(S\d{5})\]/g), (match) => match[1]));
+  const promptIds = new Set(run.prompt_ids);
+  const citedIds = new Set(run.cited_ids);
+  const source = run.legal_citations ?? run.evidence.filter((row) => citedIds.has(row.id));
+  const references = run.done && run.generate && !run.insufficient_data && !run.error
+    ? [...new Map(source
+        .filter((row) => answerIds.has(row.id) && promptIds.has(row.id))
+        .map((row) => [row.id, row])).values()]
+    : [];
+  const linked = new Set(references.map((row) => row.id));
+  const answer = run.error
+    ? esc(run.error)
+    : !run.done
+      ? run.evidence.length && run.generate ? "กำลังสร้างคำตอบ…" : "กำลังค้นหลักฐาน…"
+      : !run.generate
+        ? "รอบนี้เปิดเฉพาะการค้นหลักฐาน"
+        : run.insufficient_data || !references.length
+          ? "หลักฐานไม่เพียงพอสำหรับคำตอบที่อ้างอิงได้"
+          : esc(run.answer).replace(/\[(S\d{5})\]/g, (citation, id: string) =>
+              linked.has(id) ? `<button class="cite-link" type="button" data-target="${id}">${citation}</button>` : citation,
+            );
+  const referenceList = references.length
+    ? `<div class="legal-citations">${references.map((row) => `<article class="legal-citation" tabindex="-1" data-evid="${esc(row.id)}"><header><strong>${esc(row.law_name)} มาตรา ${esc(row.section_num)}</strong><code>${esc(row.id)}</code></header><p>${esc(row.text)}</p></article>`).join("")}</div>`
+    : `<p class="muted">${run.done ? "ไม่มีตัวบทที่อ้างในคำตอบ" : "ตัวบทอ้างอิงจะแสดงเมื่อประมวลผลเสร็จ"}</p>`;
+  return `<div class="inference-output">
+    <section><h3>คำถาม</h3><p>${esc(run.question)}</p></section>
+    <section><h3>คำตอบ</h3><div class="inference-answer">${answer}</div></section>
+    <section><h3>ตัวบทอ้างอิง</h3>${referenceList}</section>
+  </div>`;
 }
 function runCard(r?: Run, compact = false, n?: number) {
   if (!r)
     return `<section class="card answer-card ${compact ? "compact" : ""}"><div class="card-title"><div>${compact ? `<span class="step">R${n}</span>` : ""}<h2>${compact ? "ผลลัพธ์ Retriever" : "คำตอบ"}</h2></div><span class="quiet-chip">รอผล</span></div><div class="empty-state small-empty"><span class="empty-icon">✳</span><b>ผลลัพธ์จะแสดงที่นี่</b><p>หลังส่งคำถาม ระบบจะแสดงคำตอบและหลักฐานที่ค้นได้</p></div></section>`;
-  return `<section class="card answer-card ${compact ? "compact" : ""}"><div class="card-title"><div>${compact ? `<span class="step">${esc(r.method.toUpperCase())}</span>` : ""}<h2>${compact ? "ผลลัพธ์" : "คำตอบ"}</h2></div><span class="quiet-chip ${r.error ? "error-chip" : ""}">${r.error ? "เกิดข้อผิดพลาด" : r.done ? "เสร็จสิ้น" : "กำลังประมวลผล"}</span></div>${r.error ? `<div class="error-box">${esc(r.error)}</div>` : `<div class="answer-text">${r.answer ? answerHtml(r) : r.done ? "ค้นคืนเสร็จแล้ว" : r.evidence.length ? "กำลังสร้างคำตอบ…" : "กำลังค้นหลักฐาน…"}</div>`}<div class="answer-meta"><span>${esc(r.method.toUpperCase())}</span><span>${r.retrieval_ms != null ? `ค้นคืน ${r.retrieval_ms.toFixed(0)} ms` : ""}</span>${r.generation_ms != null ? `<span>สร้าง ${r.generation_ms.toFixed(0)} ms</span>` : ""}</div><details class="evidence-details"><summary>หลักฐานที่ค้นได้ <span>${r.evidence.length} รายการ</span></summary><div class="evidence-list">${r.evidence.length ? r.evidence.map((e) => `<article class="evidence" data-evid="${esc(e.id)}"><div><b>${esc(e.law_name)}</b><span class="evidence-id">มาตรา ${esc(e.section_num)} · ${esc(e.id)}</span></div><p>${esc(e.text)}</p></article>`).join("") : '<p class="muted">ไม่มีหลักฐานที่ส่งกลับ</p>'}</div></details><details class="evidence-details trace"><summary>Trace และการใช้ token</summary><div class="tracegrid"><span>Top IDs</span><b>${esc(r.retrieved_ids.join(", ") || "—")}</b><span>เข้า prompt</span><b>${esc(r.prompt_ids.join(", ") || "—")}</b><span>ถูกตัดออก</span><b>${esc(r.omitted_ids.join(", ") || "—")}</b><span>Citations</span><b>${esc(r.cited_ids.join(", ") || "—")}</b><span>ไม่ถูกต้อง</span><b>${esc(r.invalid_ids.join(", ") || "—")}</b><span>TTFT / Tokens</span><b>${r.ttft_ms ?? "—"} ms · ${r.input_tokens ?? "—"} in / ${r.output_tokens ?? "—"} out</b></div></details></section>`;
+  return `<section class="card answer-card ${compact ? "compact" : ""}"><div class="card-title"><div>${compact ? `<span class="step">${esc(r.method.toUpperCase())}</span>` : ""}<h2>${compact ? "ผลลัพธ์" : "คำตอบ"}</h2></div><span class="quiet-chip ${r.error ? "error-chip" : ""}">${r.error ? "เกิดข้อผิดพลาด" : r.done ? "เสร็จสิ้น" : "กำลังประมวลผล"}</span></div>${inferenceOutput(r)}<div class="answer-meta"><span>${esc(r.method.toUpperCase())}</span><span>${r.retrieval_ms != null ? `ค้นคืน ${r.retrieval_ms.toFixed(0)} ms` : ""}</span>${r.generation_ms != null ? `<span>สร้าง ${r.generation_ms.toFixed(0)} ms</span>` : ""}</div><details class="evidence-details"><summary>หลักฐานที่ค้นได้ <span>${r.evidence.length} รายการ</span></summary><div class="evidence-list">${r.evidence.length ? r.evidence.map((e) => `<article class="evidence" data-evid="${esc(e.id)}"><div><b>${esc(e.law_name)}</b><span class="evidence-id">มาตรา ${esc(e.section_num)} · ${esc(e.id)}</span></div><p>${esc(e.text)}</p></article>`).join("") : '<p class="muted">ไม่มีหลักฐานที่ส่งกลับ</p>'}</div></details><details class="evidence-details trace"><summary>Trace และการใช้ token</summary><div class="tracegrid"><span>Top IDs</span><b>${esc(r.retrieved_ids.join(", ") || "—")}</b><span>เข้า prompt</span><b>${esc(r.prompt_ids.join(", ") || "—")}</b><span>ถูกตัดออก</span><b>${esc(r.omitted_ids.join(", ") || "—")}</b><span>Citations</span><b>${esc(r.cited_ids.join(", ") || "—")}</b><span>ไม่ถูกต้อง</span><b>${esc(r.invalid_ids.join(", ") || "—")}</b><span>TTFT / Tokens</span><b>${r.ttft_ms ?? "—"} ms · ${r.input_tokens ?? "—"} in / ${r.output_tokens ?? "—"} out</b></div>${r.raw_answer ? `<div class="inference-raw"><b>ข้อความดิบจากโมเดล</b><pre>${esc(r.raw_answer)}</pre></div>` : ""}</details></section>`;
 }
 function wire() {
   const q = document.querySelector("#question") as HTMLTextAreaElement | null;
@@ -151,12 +182,16 @@ function wire() {
   });
   if (route() === "evaluate") loadEvaluation();
 }
-function emptyRun(method: string): Run {
+function emptyRun(method: string, question: string, generate: boolean): Run {
   return {
     method,
+    question,
+    generate,
     evidence: [],
     retrieved_ids: [],
     answer: "",
+    raw_answer: "",
+    insufficient_data: false,
     prompt_ids: [],
     omitted_ids: [],
     cited_ids: [],
@@ -209,14 +244,14 @@ async function submit(isCompare: boolean) {
     return;
   }
   if (!status.ready || controller) return;
-  controller = new AbortController();
-  current = methods.map(emptyRun);
-  updateResults();
-  if (note) note.textContent = "กำลังส่งคำถาม…";
   const generate = isCompare
     ? !!(document.querySelector("#compare-generate") as HTMLInputElement)
         ?.checked
     : !!status.generator;
+  controller = new AbortController();
+  current = methods.map((method) => emptyRun(method, question, generate));
+  updateResults();
+  if (note) note.textContent = "กำลังส่งคำถาม…";
   const questionEl = document.querySelector(
     "#question",
   ) as HTMLTextAreaElement | null;
@@ -285,6 +320,11 @@ async function submit(isCompare: boolean) {
   } catch (err) {
     if (controller !== thisController) return;
     if ((err as Error).name === "AbortError") {
+      current.filter((run) => !run.done).forEach((run) => {
+        run.error = "ยกเลิกคำขอแล้ว";
+        run.done = true;
+      });
+      updateResults();
       if (note) note.textContent = "ยกเลิกคำขอแล้ว";
     } else {
       const message =
@@ -326,9 +366,16 @@ function handleEvent(e: any) {
     r.retrieved_ids = Array.isArray(e.retrieved_ids) ? e.retrieved_ids : [];
     r.retrieval_ms = Number.isFinite(e.retrieval_ms) ? e.retrieval_ms : null;
   } else if (r && e.type === "delta") {
-    r.answer += String(e.text ?? "");
+    r.raw_answer += String(e.text ?? "");
+    return;
   } else if (r && e.type === "result") {
-    r.answer = e.answer == null ? r.answer : String(e.answer);
+    r.answer = typeof e.answer === "string" ? e.answer : "";
+    r.question = typeof e.question === "string" ? e.question : r.question;
+    r.raw_answer = typeof e.raw_answer === "string" ? e.raw_answer : r.raw_answer;
+    r.insufficient_data = e.insufficient_data === true || r.answer.trim() === "หลักฐานไม่เพียงพอ";
+    r.legal_citations = Array.isArray(e.legal_citations)
+      ? e.legal_citations.filter(isEvidence)
+      : undefined;
     for (const k of [
       "prompt_ids",
       "omitted_ids",
@@ -348,7 +395,7 @@ function finite(n: unknown): number | null {
   return typeof n === "number" && Number.isFinite(n) ? n : null;
 }
 async function loadEvaluation() {
-  const el = document.querySelector("#eval-content"),
+  const el = document.querySelector<HTMLElement>("#eval-content"),
     mode = document.querySelector("#eval-mode");
   try {
     const res = await fetch("/api/evaluate");
@@ -365,11 +412,8 @@ async function loadEvaluation() {
         '<span class="empty-icon">◎</span><b>ยังไม่มีข้อมูลประเมิน</b><p>ไม่พบ retrieval summary ที่กำหนดไว้ใน backend</p>';
       return;
     }
-    const keys = Array.from(
-      new Set(rows.flatMap((r: Record<string, unknown>) => Object.keys(r))),
-    );
     el.className = "eval-results";
-    el.innerHTML = `<div class="eval-table-wrap"><table><thead><tr>${keys.map((k) => `<th>${esc(k)}</th>`).join("")}</tr></thead><tbody>${rows.map((r: Record<string, unknown>) => `<tr>${keys.map((k) => `<td>${esc(r[k] ?? "—")}</td>`).join("")}</tr>`).join("")}</tbody></table></div><p class="footnote">ข้อมูลจาก evaluation summary ที่ backend ตั้งค่าไว้${data.mode ? ` · ${esc(data.mode)}` : ""}</p>`;
+    setEvaluationRows(el, rows);
   } catch (err) {
     if (el)
       el.innerHTML = `<span class="empty-icon">!</span><b>โหลดผลประเมินไม่สำเร็จ</b><p>${esc((err as Error).message)}</p>`;
@@ -381,14 +425,13 @@ document.addEventListener("click", (e) => {
   const b = (e.target as HTMLElement).closest<HTMLButtonElement>(".cite-link");
   if (!b) return;
   const card = b.closest(".answer-card");
-  const details = card?.querySelector(
-    ".evidence-details",
-  ) as HTMLDetailsElement | null;
-  if (details) details.open = true;
-  const target = Array.from(
-    card?.querySelectorAll<HTMLElement>(".evidence") || [],
-  ).find((el) => el.dataset.evid === b.dataset.target);
-  target?.scrollIntoView({ behavior: "smooth", block: "center" });
+  const target = Array.from(card?.querySelectorAll<HTMLElement>(".legal-citation") ?? [])
+    .find((entry) => entry.dataset.evid === b.dataset.target);
+  target?.focus({ preventScroll: true });
+  target?.scrollIntoView({
+    behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth",
+    block: "center",
+  });
 });
 window.addEventListener("hashchange", () => {
   if (route() !== lastRoute) {

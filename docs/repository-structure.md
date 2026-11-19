@@ -42,7 +42,7 @@
 | [`config.py`](../src/thai_legal_rag/config.py) | `RunConfig` เก็บค่าเริ่มต้นและตรวจค่าพื้นฐาน เช่น mode, device และจำนวนคำถาม เป็นแหล่งค่าร่วมของ evaluation กับ inference |
 | [`data.py`](../src/thai_legal_rag/data.py) | กำหนดชุดข้อมูลและ split โหลดตาม revision ปรับข้อความและเลขไทย จับคู่มาตราอ้างอิงกับคลัง เขียนผลตรวจสอบ และเลือกชุดคำถามสำหรับสร้างคำตอบโดยใช้ seed |
 | [`generation.py`](../src/thai_legal_rag/generation.py) | จัดตัวบททั้งมาตราลง prompt ตามงบ token ใช้ Typhoon สร้างคำตอบของรอบทดลอง และเขียนผลรายข้อ ตารางสรุปหลักฐาน และแบบฟอร์มให้คนตรวจ |
-| [`inference_generation.py`](../src/thai_legal_rag/inference_generation.py) | `LiveGenerator` โหลด Typhoon ไว้ให้ API ใช้ซ้ำ ทยอยส่งข้อความ รองรับการยกเลิกคำขอ และตรวจรหัสอ้างอิง ใช้ฟังก์ชันประกอบ prompt ร่วมกับ `generation.py` |
+| [`inference_generation.py`](../src/thai_legal_rag/inference_generation.py) | `LiveGenerator` โหลด Typhoon สำหรับเว็บ รองรับการทยอยส่งข้อความและยกเลิกคำขอ จัดข้อความโมเดลเป็นคำตอบพร้อมตัวบทอ้างอิง และเก็บข้อความดิบให้ตรวจย้อนหลัง |
 | [`inference_index.py`](../src/thai_legal_rag/inference_index.py) | สร้างและโหลดดัชนีสำหรับค้นคำถามใหม่ เก็บตัวบท manifest และเมทริกซ์ของ Binary BoW, TF-IDF และ Word2Vec (R1–R3) พร้อมตัวเลือกเพิ่ม BGE-M3 (R4) |
 | [`pipeline.py`](../src/thai_legal_rag/pipeline.py) | ควบคุมลำดับงานทดลองตั้งแต่ตั้ง seed และเลือกอุปกรณ์ ระบุรุ่นข้อมูลและโมเดล จนถึงเขียน manifest และสร้าง ZIP เรียก `review.py` เมื่อรวมคะแนนของรอบเดิม |
 | [`retrieval.py`](../src/thai_legal_rag/retrieval.py) | สร้างเวกเตอร์ทั้งสี่วิธี จัดอันดับด้วย exact cosine และคำนวณ Recall, Hit, nDCG และ RR/MRR พร้อมผลรายข้อและตารางสรุปสำหรับชุดคำถามที่เลือกมาสร้างคำตอบ |
@@ -70,6 +70,8 @@
 | [`frontend/package.json`](../frontend/package.json) | ระบุ TypeScript และ Vite เป็น dependencies สำหรับพัฒนา พร้อมคำสั่ง `dev`, `build` และ `preview` โดย `build` ตรวจ TypeScript ก่อนสร้างไฟล์สำหรับเสิร์ฟ |
 | [`frontend/package-lock.json`](../frontend/package-lock.json) | ล็อกเวอร์ชัน dependencies ที่ `npm ci` ใช้ติดตั้ง รวมถึงแพ็กเกจทางอ้อม |
 | [`frontend/src/main.ts`](../frontend/src/main.ts) | สร้างและสลับหน้า Playground, Compare, Evaluate และ History ส่งคำถามให้ API อ่านเหตุการณ์ NDJSON เพื่อแสดงหลักฐานและคำตอบตามลำดับ เชื่อมรหัสอ้างอิงไปยังตัวบท และเก็บ History ในหน่วยความจำของหน้าเว็บ |
+| [`frontend/src/evaluate.ts`](../frontend/src/evaluate.ts) | สร้างกราฟคะแนนและเวลา เปิดรายละเอียดราย Retriever และแสดงตารางค่าต้นทางจาก benchmark |
+| [`frontend/src/evaluate.css`](../frontend/src/evaluate.css) | จัดหน้ากราฟและตาราง Evaluate บนเดสก์ท็อปและมือถือ |
 | [`frontend/src/style.css`](../frontend/src/style.css) | กำหนดสี ตัวอักษร เมนู การ์ด ตาราง และการจัดวางสำหรับจอหลายขนาด โหลดจาก `main.ts` |
 | [`frontend/tsconfig.json`](../frontend/tsconfig.json) | ตั้งให้ตรวจ TypeScript แบบ strict สำหรับ ES2022 และ DOM เฉพาะไฟล์ใน `src/` โดย Vite รับหน้าที่สร้างไฟล์เว็บ |
 | [`frontend/vite.config.ts`](../frontend/vite.config.ts) | ตั้ง Vite dev server ให้ส่งคำขอ `/api` ต่อไปยัง backend ที่ `http://127.0.0.1:8000` |

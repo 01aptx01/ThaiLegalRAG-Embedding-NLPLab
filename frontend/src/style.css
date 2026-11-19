@@ -361,12 +361,67 @@ button {
 .answer-card .card-title {
   margin-bottom: 12px;
 }
-.answer-text {
-  white-space: normal;
-  line-height: 1.8;
-  font-size: 13px;
-  padding: 8px 0 14px;
-  min-height: 65px;
+.inference-output {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+.inference-output > section {
+  padding: 12px 14px;
+}
+.inference-output > section + section {
+  border-top: 1px solid var(--border);
+}
+.inference-output h3 {
+  margin: 0 0 6px;
+  font-size: 0.875rem;
+  color: #405649;
+}
+.inference-output p,
+.inference-answer {
+  margin: 0;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.inference-answer {
+  font-size: 1rem;
+}
+.inference-answer .cite-link {
+  font-size: 0.875rem;
+}
+.legal-citations {
+  display: grid;
+  gap: 8px;
+}
+.legal-citation {
+  padding: 11px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #f7faf8;
+  scroll-margin-top: 18px;
+}
+.legal-citation:focus {
+  outline: 2px solid #357554;
+}
+.legal-citation header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
+  margin-bottom: 5px;
+  font-size: 0.875rem;
+}
+.legal-citation code {
+  color: #3b6750;
+}
+.inference-raw {
+  margin: 8px 0;
+}
+.inference-raw pre {
+  margin: 4px 0;
+  font: inherit;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }
 .answer-meta {
   display: flex;
@@ -374,7 +429,7 @@ button {
   color: #89958d;
   font-size: 10px;
   border-bottom: 1px solid #edf0ed;
-  padding: 0 0 12px;
+  padding: 9px 0 12px;
 }
 .evidence-details {
   border-bottom: 1px solid #edf0ed;
@@ -449,14 +504,6 @@ button {
 .error-chip {
   background: #fff0ee;
   color: #a54b45;
-}
-.error-box {
-  background: #fff4f2;
-  border: 1px solid #f1dedb;
-  padding: 10px;
-  border-radius: 7px;
-  color: #994f49;
-  font-size: 12px;
 }
 .empty-state {
   text-align: center;
@@ -549,9 +596,6 @@ button {
 }
 .compact .card-title {
   margin-bottom: 9px;
-}
-.compact .answer-text {
-  min-height: 57px;
 }
 .tablecard {
   margin-top: 13px;
