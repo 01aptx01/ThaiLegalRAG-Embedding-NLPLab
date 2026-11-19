@@ -143,7 +143,7 @@ thai-legal-rag-web serve --retrieval-only --device cpu
 | รัน pilot หรือ test แล้วอ่านคะแนนและนำเข้าคะแนนคนตรวจ | [การทดลองและการประเมินผล](docs/evaluation.md) |
 | เปิดเว็บ เชื่อม API หรือตามโค้ดจากหน้าจอไปถึงโมเดล | [หน้าเว็บและ API](docs/inference-web.md) |
 
-ดูแผนที่ไฟล์และตารางเทียบเซลล์ของ Notebook ได้ที่ [สารบัญเอกสาร](docs/README.md)
+ดูหน้าที่ของแต่ละโฟลเดอร์และไฟล์ใน [โครงสร้างโปรเจกต์](docs/repository-structure.md) และดูตารางเทียบเซลล์กับโค้ด Python ใน [สารบัญเอกสาร](docs/README.md#เทียบกับ-notebook-ต้นฉบับ)
 
 ![Trace ของผลค้นจริง แสดงรหัสมาตราที่ค้นได้และช่องติดตาม prompt, citation และ token](docs/screenshots/trace.png)
 
