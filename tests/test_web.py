@@ -27,7 +27,10 @@ class Generator:
 
     def events(self, question, retrieved_ids, corpus, cancelled):
         yield {"type": "delta", "text": "คำตอบ"}
-        yield {"type": "result", "answer": "คำตอบ [S00001]", "cited_ids": ["S00001"]}
+        yield {
+            "type": "result", "answer": "คำตอบ [S00001]", "cited_ids": ["S00001"],
+            "prompt_ids": list(retrieved_ids), "omitted_ids": [],
+        }
 
 
 @unittest.skipUnless(TestClient is not None, "install the web extra to test the HTTP API")
@@ -46,6 +49,13 @@ class WorkspaceTests(unittest.TestCase):
         ])
         self.assertEqual(events[0]["method"], "r2")
         self.assertEqual(events[0]["evidence"][0]["text"], "ตัวบท")
+        self.assertEqual(events[2]["question"], "คำถาม")
+        self.assertEqual(events[2]["answer"], "คำตอบ [S00001]")
+        self.assertEqual(events[2]["raw_answer"], "คำตอบ [S00001]")
+        self.assertFalse(events[2]["insufficient_data"])
+        self.assertEqual(events[2]["legal_citations"], [{
+            "id": "S00001", "law_name": "กฎหมาย", "section_num": "1", "text": "ตัวบท",
+        }])
         self.assertEqual(events[5]["cited_ids"], ["S00001"])
 
     def test_validates_unavailable_methods_and_generation(self):
@@ -60,7 +70,40 @@ class WorkspaceTests(unittest.TestCase):
                 "question": "คำถาม", "methods": ["r1"], "generate": False,
             })
         events = [json.loads(line) for line in response.iter_lines()]
+        self.assertEqual(events[1]["question"], "คำถาม")
         self.assertIsNone(events[1]["answer"])
+        self.assertIsNone(events[1]["raw_answer"])
+        self.assertIsNone(events[1]["insufficient_data"])
+        self.assertEqual(events[1]["legal_citations"], [])
+
+    def test_scaffold_only_failure_is_canonical_abstention_but_raw_is_retained(self):
+        class BrokenGenerator:
+            model_id = "test-generator"
+
+            def events(self, question, retrieved_ids, corpus, cancelled):
+                yield {
+                    "type": "result",
+                    "raw_answer": f"คำถาม\n{question}\nตัวบท\n[S00001] ตัวบท",
+                    "prompt_ids": ["S00001"],
+                    "omitted_ids": [],
+                    "input_tokens": 7,
+                    "output_tokens": 3,
+                    "generation_ms": 10.0,
+                    "ttft_ms": 2.0,
+                }
+
+        with TestClient(create_app(index=Index(), generator=BrokenGenerator())) as client:
+            response = client.post("/api/infer", json={
+                "question": "คำถาม", "methods": ["r1"], "generate": True,
+            })
+        events = [json.loads(line) for line in response.iter_lines()]
+        result = events[1]
+        self.assertEqual(result["question"], "คำถาม")
+        self.assertEqual(result["answer"], "หลักฐานไม่เพียงพอ")
+        self.assertEqual(result["raw_answer"], "คำถาม\nคำถาม\nตัวบท\n[S00001] ตัวบท")
+        self.assertTrue(result["insufficient_data"])
+        self.assertEqual(result["legal_citations"], [])
+        self.assertEqual(result["cited_ids"], ["S00001"])
 
     def test_evaluation_uses_an_existing_run(self):
         with tempfile.TemporaryDirectory() as tmp:

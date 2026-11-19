@@ -7,6 +7,7 @@ inference API remains importable in lightweight environments.
 from __future__ import annotations
 
 import queue
+import re
 import threading
 from time import perf_counter
 from typing import Any, Mapping, Sequence
@@ -17,6 +18,159 @@ from .generation import ABSTAIN_TEXT, _CITATION_RE, _make_prompt
 
 DEFAULT_MODEL_ID = RunConfig.generator_id
 DEFAULT_MAX_INPUT_TOKENS = RunConfig.max_input_tokens
+LIVE_SYSTEM_PROMPT = (
+    "ตอบเป็นภาษาไทยและตอบเฉพาะคำถามโดยใช้ข้อเท็จจริงจากตัวบทที่ให้มาเท่านั้น "
+    "อย่าทวนคำถาม อย่าคัดลอกหัวข้อหรือตัวบท และอย่าเพิ่มเหตุผลหรือข้อความที่ตัวบทไม่รองรับ "
+    "ใส่รหัสอ้างอิงรูปแบบ [Sxxxxx] ที่ปรากฏในตัวบทไว้หลังข้อสรุปที่รหัสนั้นรองรับ "
+    "ใช้ได้เฉพาะรหัสที่เห็นในตัวบท ห้ามเดาหรือสร้างรหัส "
+    "หากตัวบทไม่รองรับคำตอบ ให้ตอบเพียง 'หลักฐานไม่เพียงพอ' โดยไม่ใส่รหัสอ้างอิง"
+)
+
+_ANSWER_HEADINGS = {"คำตอบ", "answer"}
+_SCAFFOLD_HEADINGS = {
+    "คำถาม", "question", "ตัวบท", "หลักฐาน", "evidence", "เหตุผล", "reason",
+    "อ้างอิง", "ตัวบทอ้างอิง", "เอกสารอ้างอิง", "references", "reference",
+    "หมายเหตุ", "คำชี้แจง", "สรุป", "context", "sources",
+}
+_HEADING_RE = re.compile(
+    r"^\s*(?:#{1,6}\s*)?(?:\*\*)?"
+    r"(?P<name>คำตอบ|คำถาม|ตัวบทอ้างอิง|เอกสารอ้างอิง|ตัวบท|หลักฐาน|เหตุผล|อ้างอิง|หมายเหตุ|คำชี้แจง|สรุป|"
+    r"answer|question|evidence|reason|references?|context|sources)"
+    r"(?:\*\*)?\s*(?::|：\s*)(?P<inline>.*)$|"
+    r"^\s*(?:#{1,6}\s*)?(?:\*\*)?"
+    r"(?P<bare>คำตอบ|คำถาม|ตัวบทอ้างอิง|เอกสารอ้างอิง|ตัวบท|หลักฐาน|เหตุผล|อ้างอิง|หมายเหตุ|คำชี้แจง|สรุป|"
+    r"answer|question|evidence|reason|references?|context|sources)(?:\*\*)?\s*$",
+    flags=re.IGNORECASE,
+)
+
+
+def _heading(line: str) -> tuple[str, str | None] | None:
+    match = _HEADING_RE.match(line)
+    if not match:
+        return None
+    name = (match.group("name") or match.group("bare") or "").casefold()
+    return name, match.group("inline")
+
+
+def _normalize_echo(value: str) -> str:
+    return " ".join(value.strip().strip("\"'“”‘’「」『』").split()).casefold()
+
+
+def _is_abstention(body: str) -> bool:
+    normalized = body.lstrip()
+    return normalized.startswith((ABSTAIN_TEXT, "ข้อมูลไม่เพียงพอ", "ไม่ทราบ"))
+
+
+def _remove_echoed_question(body: str, question: str) -> str:
+    lines = body.splitlines()
+    first = next((index for index, line in enumerate(lines) if line.strip()), None)
+    if first is not None and _normalize_echo(lines[first]) == _normalize_echo(question):
+        del lines[first]
+    return "\n".join(lines).strip()
+
+
+def extract_answer_body(raw_answer: str, question: str) -> str:
+    """Remove echoed prompt scaffolding while keeping the generated answer prose."""
+    raw = raw_answer.replace("\r\n", "\n").replace("\r", "\n")
+    lines = raw.splitlines()
+    headings = [(index, _heading(line)) for index, line in enumerate(lines)]
+    answer_indexes = [
+        index for index, header in headings
+        if header is not None and header[0] in _ANSWER_HEADINGS
+    ]
+
+    if answer_indexes:
+        for answer_index in answer_indexes:
+            header = _heading(lines[answer_index])
+            assert header is not None
+            body_lines = [header[1]] if header[1] else []
+            for line in lines[answer_index + 1:]:
+                next_header = _heading(line)
+                if next_header is not None and next_header[0] in _SCAFFOLD_HEADINGS | _ANSWER_HEADINGS:
+                    break
+                body_lines.append(line)
+            body = _remove_echoed_question("\n".join(body_lines), question)
+            if not body:
+                continue
+            if _is_abstention(body):
+                return ABSTAIN_TEXT
+            return body
+        return ""
+
+    first_scaffold = next(
+        ((index, header) for index, header in headings
+         if header is not None and header[0] in _SCAFFOLD_HEADINGS),
+        None,
+    )
+    if first_scaffold is not None:
+        scaffold_index, _ = first_scaffold
+        prefix = "\n".join(lines[:scaffold_index]).strip()
+        if not prefix:
+            return ""
+        body = prefix
+    else:
+        body = raw.strip()
+    body = _remove_echoed_question(body, question)
+    if _normalize_echo(body) == _normalize_echo(question):
+        return ""
+    return ABSTAIN_TEXT if _is_abstention(body) else body
+
+
+def _is_copied_statute(body: str, cited_ids: Sequence[str], corpus: Mapping[str, Mapping[str, Any]]) -> bool:
+    citation_only = re.fullmatch(r"\s*(?:\[S\d{5}\]\s*)+", body, flags=re.ASCII)
+    if citation_only:
+        return True
+    if len(cited_ids) != 1:
+        return False
+    text_without_citations = _CITATION_RE.sub("", body).strip()
+    section = corpus.get(cited_ids[0], {}).get("section_content")
+    return bool(section) and _normalize_echo(text_without_citations) == _normalize_echo(str(section))
+
+
+def citation_audit(
+    raw_answer: str | None,
+    prompt_ids: Sequence[str],
+    corpus: Mapping[str, Mapping[str, Any]],
+) -> tuple[list[str], list[str]]:
+    """Return raw citation IDs and those absent from prompt or corpus."""
+    cited_ids = list(dict.fromkeys(_CITATION_RE.findall(raw_answer or "")))
+    allowed = set(prompt_ids).intersection(corpus)
+    invalid_ids = [statute_id for statute_id in cited_ids if statute_id not in allowed]
+    return cited_ids, invalid_ids
+
+
+def canonicalize_answer(
+    raw_answer: str | None,
+    question: str,
+    prompt_ids: Sequence[str],
+    corpus: Mapping[str, Mapping[str, Any]],
+) -> tuple[str, list[dict[str, str]]]:
+    """Return a citation-validated answer and its cited corpus rows."""
+    if raw_answer is None:
+        return ABSTAIN_TEXT, []
+    body = extract_answer_body(raw_answer, question)
+    if not body or _is_abstention(body):
+        return ABSTAIN_TEXT, []
+
+    cited_ids = list(dict.fromkeys(_CITATION_RE.findall(body)))
+    allowed = set(prompt_ids).intersection(corpus)
+    if (
+        not cited_ids
+        or any(statute_id not in allowed for statute_id in cited_ids)
+        or _is_copied_statute(body, cited_ids, corpus)
+    ):
+        return ABSTAIN_TEXT, []
+
+    legal_citations = [
+        {
+            "id": statute_id,
+            "law_name": str(corpus[statute_id]["law_name"]),
+            "section_num": str(corpus[statute_id]["section_num"]),
+            "text": str(corpus[statute_id]["section_content"]),
+        }
+        for statute_id in cited_ids
+    ]
+    return body, legal_citations
 
 
 class LiveGenerator:
@@ -87,12 +241,13 @@ class LiveGenerator:
             self.tokenizer,
             self.max_input_tokens,
             self.device,
+            system_prompt=LIVE_SYSTEM_PROMPT,
         )
         input_tokens = int(input_ids.shape[-1])
         if not included:
             yield {
                 "type": "result",
-                "answer": ABSTAIN_TEXT,
+                "raw_answer": None,
                 "prompt_ids": included,
                 "omitted_ids": omitted,
                 "cited_ids": [],
@@ -182,7 +337,7 @@ class LiveGenerator:
                     output_tokens = max(0, int(output.shape[-1]) - input_tokens)
                     generated_answer = self.tokenizer.decode(
                         output[0, input_tokens:], **streamer.decode_kwargs,
-                    ).strip()
+                    )
             except Exception as exc:
                 worker_errors.append(exc)
                 # Ensure the consumer wakes even when generate fails before the
@@ -223,13 +378,12 @@ class LiveGenerator:
 
         # Stream deltas are best-effort incremental text. Decode the returned
         # token suffix once for the authoritative answer and citation audit.
-        answer = generated_answer if generated_answer is not None else "".join(answer_parts).strip()
-        cited_ids = list(dict.fromkeys(_CITATION_RE.findall(answer)))
-        invalid_ids = [sid for sid in cited_ids if sid not in included]
+        raw_answer = generated_answer if generated_answer is not None else "".join(answer_parts)
+        cited_ids, invalid_ids = citation_audit(raw_answer, included, corpus)
         finished = perf_counter()
         yield {
             "type": "result",
-            "answer": answer,
+            "raw_answer": raw_answer,
             "prompt_ids": included,
             "omitted_ids": omitted,
             "cited_ids": cited_ids,
