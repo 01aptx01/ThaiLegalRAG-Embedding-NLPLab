@@ -9,29 +9,12 @@
 | เอกสาร | ใช้ดูอะไร |
 | --- | --- |
 | [เริ่มใช้งาน](getting-started.md) | ติดตั้ง เปิดเว็บครั้งแรก หรือแก้ปัญหาเครื่องรัน |
+| [โครงสร้างโปรเจกต์](repository-structure.md) | ดูหน้าที่ของแต่ละโฟลเดอร์และไฟล์ และหาโค้ดที่จะเริ่มอ่านตามงาน |
 | [ข้อมูลและการจับคู่มาตรา](data.md) | ตรวจแหล่งข้อมูล วิธีตั้งรหัส และคำถามที่ถูกคัดออก |
 | [การค้นมาตรา](retrieval.md) | อ่านวิธีสร้างเวกเตอร์และจัดอันดับทั้งสี่แบบ |
 | [การสร้างคำตอบ](generation.md) | ตรวจว่าตัวบทใดเข้า prompt และคำตอบอ้างมาตราอะไร |
 | [การทดลองและการประเมินผล](evaluation.md) | รัน pilot หรือ test อ่านคะแนน และนำเข้าคะแนนคนตรวจ |
 | [หน้าเว็บและ API](inference-web.md) | ใช้แต่ละหน้า หรือเชื่อมต่อกับ API ด้วยโค้ด |
-
-## สองทางเข้าในโค้ด
-
-**การทดลอง** เริ่มที่ `thai-legal-rag run` ใน [cli.py](../src/thai_legal_rag/cli.py) แล้ว [pipeline.py](../src/thai_legal_rag/pipeline.py) จะโหลดข้อมูล เลือกคำถาม รันทั้งสี่วิธี เขียนผล และสร้าง ZIP ของรอบนั้น หากต้องกรอกคะแนนคนตรวจภายหลัง ให้ใช้ `thai-legal-rag review` กับโฟลเดอร์ผลเดิม
-
-**หน้าเว็บ** ใช้ `thai-legal-rag-web build-index` เพื่อสร้างไฟล์ค้นคืนจากคลัง แล้ว `thai-legal-rag-web serve` โหลดไฟล์เหล่านั้นไว้รอคำถามใหม่ [web.py](../src/thai_legal_rag/web.py) เสิร์ฟหน้าเว็บจากไฟล์ที่ build แล้วและรับคำถามผ่าน API การถามบนเว็บจะไม่เพิ่มแถวในไฟล์ benchmark
-
-| ตำแหน่ง | หน้าที่ |
-| --- | --- |
-| [frontend/src/main.ts](../frontend/src/main.ts) | สลับหน้า ส่งคำถาม อ่านผลทีละบรรทัด และเชื่อมรหัสอ้างอิงไปยังตัวบท |
-| [frontend/src/style.css](../frontend/src/style.css) | รูปแบบหน้าจอและการจัดวางบนจอเล็ก |
-| [data.py](../src/thai_legal_rag/data.py) | โหลดข้อมูล ตรวจคอลัมน์ จับคู่มาตรา และเลือกคำถาม |
-| [retrieval.py](../src/thai_legal_rag/retrieval.py) | จัดอันดับและวัดผลการค้นในการทดลอง |
-| [inference_index.py](../src/thai_legal_rag/inference_index.py) | สร้างและเปิดดัชนีสำหรับคำถามใหม่ |
-| [generation.py](../src/thai_legal_rag/generation.py) | ประกอบคำสั่งกับตัวบท สร้างคำตอบและไฟล์ผลการทดลอง |
-| [inference_generation.py](../src/thai_legal_rag/inference_generation.py) | โหลด Typhoon ไว้ในเซิร์ฟเวอร์และทยอยส่งคำตอบ |
-| [review.py](../src/thai_legal_rag/review.py) | ตรวจไฟล์คะแนนและรวมผลจากคนตรวจ |
-| [tests/](../tests/) | ทดสอบการจับคู่ อันดับ การใส่หลักฐาน การรับคะแนน และ API |
 
 ## เทียบกับ Notebook ต้นฉบับ
 
